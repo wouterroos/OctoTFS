@@ -8,4 +8,7 @@ Team Build Preview Custom Steps
 
 Custom Build Steps for [Team Build vNext](http://vsalmdocs.azurewebsites.net/library/vs/alm/build/overview)
 
+For usage, see the Build Steps [Readme](source/CustomBuildSteps)
+
+**Build Steps:**
 * [Create Octopus Release](source/CustomBuildSteps/CreateOctopusRelease)
