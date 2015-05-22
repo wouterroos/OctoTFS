@@ -12,3 +12,13 @@ For usage, see the Build Steps [Readme](source/CustomBuildSteps)
 
 **Build Steps:**
 * [Create Octopus Release](source/CustomBuildSteps/CreateOctopusRelease)
+
+Build PowerShell Scripts
+------------------------
+
+PowerShell Scripts that can be used independently or with [Team Build vNext](http://vsalmdocs.azurewebsites.net/library/vs/alm/build/overview)
+
+For usage, see the PowerShell Scripts [Readme](source/BuildPowershellScripts)
+
+**PowerShell Scripts:**
+* [Create Octopus Release](source/BuildPowershellScripts/CreateOctopusRelease.ps1)
