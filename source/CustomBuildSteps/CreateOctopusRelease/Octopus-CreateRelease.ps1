@@ -64,7 +64,7 @@ function Get-OctoCredentialParameters($serviceDetails) {
         return "--apiKey=$pwd"
     } else {
         $un = $serviceDetails.Authorization.Parameters.Username
-        return "--user=`"$un`" --pass=`"$pass`""
+        return "--user=`"$un`" --pass=`"$pwd`""
     }
 }
 
