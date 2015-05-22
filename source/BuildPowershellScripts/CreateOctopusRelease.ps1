@@ -2,7 +2,7 @@ param(
 	[string]$apiKey,
 	[string]$octopusUrl,
 	[string]$octopusProjectId,
-	[string]$nugetPackageVersions = $null	# needs to be a JSON array of {StepName, Version} objects. If not provided, we'll try to get the latest
+	[string]$nugetPackageVersions	# needs to be a JSON array of {StepName, Version} objects. If not provided, we'll try to get the latest
 )
 $octopusHeader =  @{ "X-Octopus-ApiKey" = $apiKey }
 if (-not $octopusUrl.EndsWith("/")) {$octopusUrl += "/" }
@@ -78,7 +78,7 @@ $templateUrl = $octoProject.Links.DeploymentProcess + "/template"
 $deploymentTemplate = Get-OctopusWebRequest $templateUrl 
 
 # Get package versions
-if ([string]::IsNullOrEmpty($nugetPackageVersions))
+if (-not [string]::IsNullOrEmpty($nugetPackageVersions))
 {
 	$packageVersions = $nugetPackageVersions | ConvertFrom-Json
 }

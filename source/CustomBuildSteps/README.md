@@ -21,7 +21,7 @@ Creates a new Release in Octopus Deploy.
  
  ![Octopus Connected Service](../../img/tfsbuild-connectedservice2.png)
  
- *Note: You can use either username and password, or an API key in the password field. We'll work out which one you're using.*
+ *Note: Currently, you should just put an [API key](http://docs.octopusdeploy.com/display/OD/How+to+create+an+API+key) in the password field. We'll add user/pass soon and work out which one you're using.*
  
 3. Add the *Create Octopus Release* custom build step to your build definition.
 
