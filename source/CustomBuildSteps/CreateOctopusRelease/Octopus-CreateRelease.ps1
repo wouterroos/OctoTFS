@@ -26,7 +26,7 @@ function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
 	
 	$changesUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_apis/build/builds/$($env:BUILD_BUILDID)/changes"
 	$headers = @{Authorization = "Bearer $personalAccessToken"}
-	$relatedChanges = (Invoke-WebRequest -Uri $changesUri -Headers $headers) | ConvertFrom-Json
+	$relatedChanges = (Invoke-WebRequest -Uri $changesUri -Headers $headers -UseBasicParsing) | ConvertFrom-Json
 	Write-Host "Related Changes = $relatedChanges"
 	
 	$releaseNotes = ""
@@ -44,7 +44,7 @@ function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
 			# work item id is a hack because id is prefixed with "C", and I'm not 100% sure it's consistent.
 			$wiId = $c.location.Substring($c.location.LastIndexOf("/")+1)
 			$wiUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)/_apis/tfvc/changesets/$wiId/workItems"
-			$wi = (Invoke-WebRequest -Uri $wiUri -Headers $headers) | ConvertFrom-Json
+			$wi = (Invoke-WebRequest -Uri $wiUri -Headers $headers -UseBasicParsing) | ConvertFrom-Json
 			$wi.value | ForEach-Object {$releaseNotes += "* [$($_.id)]($($_.webUrl)): $($_.title) [$($_.state)]$nl"}
 		}
 	}
