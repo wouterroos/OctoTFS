@@ -32,20 +32,38 @@ function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
 	$releaseNotes = ""
 	$nl = "`r`n`r`n"
 	if ($comments -eq $true) {
-		Write-Host "Adding changeset comments to release notes"
-		$releaseNotes += "**Changeset Comments:**$nl"
-		$relatedChanges.value | ForEach-Object {$releaseNotes += "* [$($_.id) - $($_.author.displayName)]($(ChangesetUrl $_.location)): $($_.message)$nl"}
+		if ($env:BUILD_REPOSITORY_PROVIDER -eq "Tfvc") {
+			Write-Host "Adding changeset comments to release notes"
+			$releaseNotes += "**Changeset Comments:**$nl"
+			$relatedChanges.value | ForEach-Object {$releaseNotes += "* [$($_.id) - $($_.author.displayName)]($(ChangesetUrl $_.location)): $($_.message)$nl"}
+		} elseif ($env:BUILD_REPOSITORY_PROVIDER -eq "TfsGit") {
+			Write-Host "Adding commit messages to release notes"
+			$releaseNotes += "**Commit Messages:**$nl"
+			$relatedChanges.value | ForEach-Object {$releaseNotes += "* [$($_.id) - $($_.author.displayName)]($(CommitUrl $_)): $($_.message)$nl"}
+		}
 	}
 	
 	if ($workItems -eq $true) {
 		Write-Host "Adding work items to release notes"
 		$releaseNotes += "**Work Items:**$nl"
-		foreach ($c in $relatedChanges.value) {
-			# work item id is a hack because id is prefixed with "C", and I'm not 100% sure it's consistent.
-			$wiId = $c.location.Substring($c.location.LastIndexOf("/")+1)
-			$wiUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)/_apis/tfvc/changesets/$wiId/workItems"
-			$wi = (Invoke-WebRequest -Uri $wiUri -Headers $headers -UseBasicParsing) | ConvertFrom-Json
-			$wi.value | ForEach-Object {$releaseNotes += "* [$($_.id)]($($_.webUrl)): $($_.title) [$($_.state)]$nl"}
+		if ($env:BUILD_REPOSITORY_PROVIDER -eq "Tfvc") {
+			foreach ($c in $relatedChanges.value) {
+				# work item id is a hack because id is prefixed with "C", and I'm not 100% sure it's consistent.
+				$wiId = $c.location.Substring($c.location.LastIndexOf("/")+1)
+				$wiUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)/_apis/tfvc/changesets/$wiId/workItems"
+				$wi = (Invoke-WebRequest -Uri $wiUri -Headers $headers -UseBasicParsing) | ConvertFrom-Json
+				$wi.value | ForEach-Object {$releaseNotes += "* [$($_.id)]($($_.webUrl)): $($_.title) [$($_.state)]$nl"}
+			}
+		} elseif ($env:BUILD_REPOSITORY_PROVIDER -eq "TfsGit") {
+			$relatedWorkItemsUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_apis/build/builds/$($env:BUILD_BUILDID)/workitems?api-version=2.0"
+			Write-Host "Performing POST request to $relatedWorkItemsUri"
+			$relatedWorkItems = (Invoke-WebRequest -Uri $relatedWorkItemsUri -Method POST -Headers $headers -UseBasicParsing -ContentType "application/json") | ConvertFrom-Json
+			$workItemsUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)/_apis/wit/workItems?ids=$(($relatedWorkItems.value.id) -join '%2C')"
+			Write-Host "Performing GET request to $workItemsUri"
+			$workItemsDetails = (Invoke-WebRequest -Uri $workItemsUri -Headers $headers -UseBasicParsing) | ConvertFrom-Json
+			
+			$workItemEditBaseUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_workitems/edit"
+			$workItemsDetails.value | ForEach-Object {$releaseNotes += "* [$($_.id)]($workItemEditBaseUri/$($_.id)): $($_.fields.'System.Title') [$($_.fields.'System.State')]$nl"}
 		}
 	}
 	
@@ -54,6 +72,11 @@ function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
 function ChangesetUrl($apiUrl) {
 	$wiId = $apiUrl.Substring($apiUrl.LastIndexOf("/")+1)
 	return "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_versionControl/changeset/$wiId"
+}
+function CommitUrl($change) {
+	$commitId = $change.id
+	$repositoryId = Split-Path (Split-Path (Split-Path $change.location -Parent) -Parent) -Leaf
+	return "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_git/$repositoryId/commit/$commitId"
 }
 
 
