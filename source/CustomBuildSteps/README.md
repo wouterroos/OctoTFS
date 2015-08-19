@@ -45,4 +45,3 @@ The *Release Notes* options, if selected, will result in nicely formatted releas
 
 ![Release Notes in Octopus Deploy Release](../../img/tfsbuild-releasenotes.png)
 
-*Note: Currently only working for TFVC repositories. Git repositories coming soon*
