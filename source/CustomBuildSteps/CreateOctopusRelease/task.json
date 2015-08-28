@@ -12,7 +12,7 @@
     "version": {
         "Major": 0,
         "Minor": 2,
-        "Patch": 8
+        "Patch": 9
     },
     "minimumAgentVersion": "1.82.0",
 	"groups": [
@@ -47,7 +47,7 @@
 		{
 			"name": "ChangesetCommentReleaseNotes",
 			"type": "boolean",
-			"label": "Include Changeset comments",
+			"label": "Include Changeset Comments",
 			"defaultValue": "false",
 			"required": false,
 			"helpMarkDown": "Whether to include linked Changeset comments in Octopus Release notes",
