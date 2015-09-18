@@ -11,23 +11,11 @@ These need to be uploaded to your Visual Studio or TFS instance before they can 
 ----------------------
 Creates a new Release in Octopus Deploy.
 
-### Instructions for use:
+### Instructions for use
 
-1. Upload the `CreateOctopusRelease` custom build task (*Note: not currently available)*
+Detailed installation instructions can be found at [http://docs.octopusdeploy.com/display/OD/Use+the+Team+Foundation+Build+Custom+Task](http://docs.octopusdeploy.com/display/OD/Use+the+Team+Foundation+Build+Custom+Task)
 
-2. Add a Generic *Connected Service* in the Administration page for your Team Project.
-
- ![Octopus Connected Service](../../img/tfsbuild-connectedservice1.png)
- 
- ![Octopus Connected Service](../../img/tfsbuild-connectedservice2.png)
- 
- *Note: Currently, you should just put an [API key](http://docs.octopusdeploy.com/display/OD/How+to+create+an+API+key) in the password field. We'll add user/pass soon and work out which one you're using.*
- 
-3. Add the *Create Octopus Release* custom build step to your build definition.
-
- ![Add Custom Build Step](../../img/tfsbuild-addbuildstep.png)
- 
-4. Configure the custom build step.
+There are a number of configuration options available.
 
  ![Configure Custom Build Step](../../img/tfsbuild-configurebuildstep.png)
  
