@@ -26,17 +26,19 @@ function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
 	
 	$changesUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_apis/build/builds/$($env:BUILD_BUILDID)/changes"
 	$headers = @{Authorization = "Bearer $personalAccessToken"}
-	$relatedChanges = (Invoke-WebRequest -Uri $changesUri -Headers $headers -UseBasicParsing) | ConvertFrom-Json
-	Write-Host "Related Changes = $relatedChanges"
+	$changesResponse = Invoke-WebRequest -Uri $changesUri -Headers $headers -UseBasicParsing
+	$relatedChanges = $changesResponse.Content | ConvertFrom-Json
+	Write-Host "Related Changes = $($relatedChanges.value)"
 	
 	$releaseNotes = ""
 	$nl = "`r`n`r`n"
 	if ($comments -eq $true) {
-		if ($env:BUILD_REPOSITORY_PROVIDER -eq "Tfvc") {
+		Write-Host "Build Provider: $($env:BUILD_REPOSITORY_PROVIDER)"
+		if ($env:BUILD_REPOSITORY_PROVIDER -eq "TfsVersionControl") {
 			Write-Host "Adding changeset comments to release notes"
 			$releaseNotes += "**Changeset Comments:**$nl"
 			$relatedChanges.value | ForEach-Object {$releaseNotes += "* [$($_.id) - $($_.author.displayName)]($(ChangesetUrl $_.location)): $($_.message)$nl"}
-		} elseif ($env:BUILD_REPOSITORY_PROVIDER -eq "TfsGit") {
+		} else {
 			Write-Host "Adding commit messages to release notes"
 			$releaseNotes += "**Commit Messages:**$nl"
 			$relatedChanges.value | ForEach-Object {$releaseNotes += "* [$($_.id) - $($_.author.displayName)]($(CommitUrl $_)): $($_.message)$nl"}
@@ -46,31 +48,34 @@ function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
 	if ($workItems -eq $true) {
 		Write-Host "Adding work items to release notes"
 		$releaseNotes += "**Work Items:**$nl"
-		if ($env:BUILD_REPOSITORY_PROVIDER -eq "Tfvc") {
+		if ($env:BUILD_REPOSITORY_PROVIDER -eq "TfsVersionControl") {
 			foreach ($c in $relatedChanges.value) {
 				# work item id is a hack because id is prefixed with "C", and I'm not 100% sure it's consistent.
 				$wiId = $c.location.Substring($c.location.LastIndexOf("/")+1)
 				$wiUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)/_apis/tfvc/changesets/$wiId/workItems"
-				$wi = (Invoke-WebRequest -Uri $wiUri -Headers $headers -UseBasicParsing) | ConvertFrom-Json
+				$wiResponse = Invoke-WebRequest -Uri $wiUri -Headers $headers -UseBasicParsing
+				$wi = $wiResponse.Content | ConvertFrom-Json
 				$wi.value | ForEach-Object {$releaseNotes += "* [$($_.id)]($($_.webUrl)): $($_.title) [$($_.state)]$nl"}
 			}
-		} elseif ($env:BUILD_REPOSITORY_PROVIDER -eq "TfsGit") {
+		} else {
 			$relatedWorkItemsUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_apis/build/builds/$($env:BUILD_BUILDID)/workitems?api-version=2.0"
 			Write-Host "Performing POST request to $relatedWorkItemsUri"
-			$relatedWorkItems = (Invoke-WebRequest -Uri $relatedWorkItemsUri -Method POST -Headers $headers -UseBasicParsing -ContentType "application/json") | ConvertFrom-Json
+			$relatedWiResponse = Invoke-WebRequest -Uri $relatedWorkItemsUri -Method POST -Headers $headers -UseBasicParsing -ContentType "application/json"
+			$relatedWorkItems = $relatedWiResponse.Content | ConvertFrom-Json
 			
 			Write-Host "Retrieved $($relatedWorkItems.count) work items"
 			if ($relatedWorkItems.count -gt 0) {
 				$workItemsUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)/_apis/wit/workItems?ids=$(($relatedWorkItems.value.id) -join '%2C')"
 				Write-Host "Performing GET request to $workItemsUri"
-				$workItemsDetails = (Invoke-WebRequest -Uri $workItemsUri -Headers $headers -UseBasicParsing) | ConvertFrom-Json
+				$relatedWiDetailsResponse = Invoke-WebRequest -Uri $workItemsUri -Headers $headers -UseBasicParsing
+				$workItemsDetails = $relatedWiDetailsResponse.Content | ConvertFrom-Json
 			
 				$workItemEditBaseUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_workitems/edit"
 				$workItemsDetails.value | ForEach-Object {$releaseNotes += "* [$($_.id)]($workItemEditBaseUri/$($_.id)): $($_.fields.'System.Title') [$($_.fields.'System.State')]$nl"}
 			}
 		}
 	}
-	
+	Write-Host "Release Notes:`r`n$releaseNotes"
 	return $releaseNotes
 }
 function ChangesetUrl($apiUrl) {
