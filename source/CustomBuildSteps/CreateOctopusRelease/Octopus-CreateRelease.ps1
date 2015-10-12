@@ -50,7 +50,7 @@ function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
 		Write-Host "Adding work items to release notes"
 		$releaseNotes += "**Work Items:**$nl"
 		
-
+        # Not certain this provider check is required, calls to VSO API to get work items do not appear to vary by provider.
         if ($env:BUILD_REPOSITORY_PROVIDER -eq "TfsVersionControl") {
 			$relatedWorkItemsUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_apis/build/builds/$($env:BUILD_BUILDID)/workitems?api-version=2.0"
 			Write-Host "Performing POST request to $relatedWorkItemsUri"
@@ -62,8 +62,8 @@ function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
 				Write-Host "Performing GET request to $workItemsUri"
 				$workItemsDetails = (Invoke-WebRequest -Uri $workItemsUri -Headers $headers -UseBasicParsing) | ConvertFrom-Json
 			
-				$workItemEditBaseUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_workitems/edit"
-				$workItemsDetails.value | ForEach-Object {$releaseNotes += "* [$($_.id)]($workItemEditBaseUri/$($_.id)): **$($_.fields.'System.AreaPath')** $($_.fields.'System.Title') [$($_.fields.'System.State')]$nl"}
+				$workItemEditBaseUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_workitems/edit"                
+                $workItemsDetails.value | ForEach-Object {$releaseNotes += "* [$($_.id)]($workItemEditBaseUri/$($_.id)): $($_.fields.'System.Title') [$($_.fields.'System.State')] $(GetWorkItemTags($_.fields)) $nl"}
 			}
 		} elseif ($env:BUILD_REPOSITORY_PROVIDER -eq "TfsGit") {
 			$relatedWorkItemsUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_apis/build/builds/$($env:BUILD_BUILDID)/workitems?api-version=2.0"
@@ -77,12 +77,22 @@ function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
 				$workItemsDetails = (Invoke-WebRequest -Uri $workItemsUri -Headers $headers -UseBasicParsing) | ConvertFrom-Json
 			
 				$workItemEditBaseUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_workitems/edit"
-				$workItemsDetails.value | ForEach-Object {$releaseNotes += "* [$($_.id)]($workItemEditBaseUri/$($_.id)): $($_.fields.'System.Title') [$($_.fields.'System.State')]$nl"}
+				$workItemsDetails.value | ForEach-Object {$releaseNotes += "* [$($_.id)]($workItemEditBaseUri/$($_.id)): $($_.fields.'System.Title') [$($_.fields.'System.State')] $(GetWorkItemTags($_.fields)) $nl"}
 			}
 		}
 	}
 	
 	return $releaseNotes
+}
+function GetWorkItemTags($workItemFields)
+{    
+    $tagHtml = ""
+    if($workItemFields -ne $null -and $workItemFields.'System.Tags' -ne $null )
+    {        
+        $workItemFields.'System.Tags'.Split(';') | ForEach-Object {$tagHtml += "<span class='label label-info'>$($_)</span>"}
+    }
+   
+    return $tagHtml
 }
 function ChangesetUrl($apiUrl) {
 	$wiId = $apiUrl.Substring($apiUrl.LastIndexOf("/")+1)
