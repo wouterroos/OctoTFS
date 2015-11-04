@@ -24,7 +24,7 @@
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "Create Octopus Release"
+                "name": "CreateOctopusRelease"
             }
         }
     ]
