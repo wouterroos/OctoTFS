@@ -1,0 +1,16 @@
+{
+    "scopes": [],
+    "contributions": [
+        {
+            "id": "octopus-create-release",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "Create Octopus Release"
+            }
+        }
+    ],
+    "manifestVersion": 1
+}

@@ -1,0 +1,31 @@
+{
+    "manifestVersion": 1,
+    "id": "octopus-deploy-build-release-tasks",
+    "name": "Octopus Deploy Build and Release Tasks",
+    "version": "0.4.0",
+    "publisher": "octopusdeploy",
+    "description": "Build tasks for integrating with Octopus Deploy",
+    "categories": [
+        "Build and release"
+    ],
+    "icons": {
+        "default": "extension-icon.png"
+    },
+    "files": [
+        {
+            "path": "CreateOctopusRelease"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "octopus-create-release",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "Create Octopus Release"
+            }
+        }
+    ]
+}
