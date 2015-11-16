@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "octopus-deploy-build-release-tasks",
     "name": "Octopus Deploy Build and Release Tasks",
-    "version": "0.4.6",
+    "version": "0.4.7",
     "publisher": "octopusdeploy",
     "description": "Build and Release tasks for integrating with Octopus Deploy",
     "categories": [
@@ -54,7 +54,8 @@
             "path": "CreateOctopusRelease"
         },
         {
-            "path": "img"
+            "path": "img",
+            "addressable": true
         }
     ],
     "scopes": [
