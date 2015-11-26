@@ -1,7 +1,7 @@
 Team Build Preview Custom Steps
 ===============================
 
-Custom Build Steps for [Team Build vNext](http://vsalmdocs.azurewebsites.net/library/vs/alm/build/overview)
+Custom Build Steps for [Team Build vNext](http://aka.ms/tfbuild)
 
 These need to be uploaded to your Visual Studio or TFS instance before they can be used. To upload this custom task, use the `tfs-cli` tool available from [https://www.npmjs.com/package/tfx-cli](https://github.com/Microsoft/tfs-cli).
 
