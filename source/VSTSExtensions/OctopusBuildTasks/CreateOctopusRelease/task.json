@@ -63,6 +63,15 @@
 			"groupName": "releasenotes"
 		},
 		{
+			"name": "CustomReleaseNotes",
+			"type": "string",
+			"label": "Custom Notes",
+			"defaultValue": "",
+			"required": false,
+			"helpMarkDown": "Custom notes appended to Octopus Release notes",
+			"groupName": "releasenotes"
+		},
+		{
 			"name": "DeployTo",
 			"type": "string",
 			"label": "Deploy Release To",

@@ -8,6 +8,8 @@
 	[string] [Parameter(Mandatory = $false)]
 	$WorkItemReleaseNotes,
 	[string] [Parameter(Mandatory = $false)]
+	$CustomReleaseNotes,
+	[string] [Parameter(Mandatory = $false)]
 	$DeployTo,
 	[string] [Parameter(Mandatory = $false)]
 	$AdditionalArguments
@@ -126,6 +128,12 @@ function Create-ReleaseNotes($linkedItemReleaseNotes) {
 	if (-not [System.String]::IsNullOrWhiteSpace($linkedItemReleaseNotes)) {
 		$notes += "`r`n`r`n$linkedItemReleaseNotes"
 	}
+	
+	if(-not [System.String]::IsNullOrWhiteSpace($CustomReleaseNotes)) {
+		$notes += "`r`n`r`n**Custom Notes:**"
+		$notes += "`r`n`r`n$CustomReleaseNotes"
+	}
+	
 	$fileguid = [guid]::NewGuid()
 	$fileLocation = Join-Path -Path $env:BUILD_STAGINGDIRECTORY -ChildPath "release-notes-$fileguid.md"
 	$notes | Out-File $fileLocation -Encoding utf8
