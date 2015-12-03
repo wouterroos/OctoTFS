@@ -31,7 +31,7 @@ Describe "Create Octopus Release" {
 		}
 		
 		# Setup a Mock for retrieving the VSO/TFS service endpoint
-		Mock Get-ServiceEndpoint -Verifiable -ParameterFilter { $Name -eq "SystemVssConnection" } {
+		Mock Get-ServiceEndpoint -ParameterFilter { $Name -eq "SystemVssConnection" } {
 				return [PSCustomObject]@{
 					"Url"="http://dummtfsurl";
 					"Authorization"=[PSCustomObject]@{
