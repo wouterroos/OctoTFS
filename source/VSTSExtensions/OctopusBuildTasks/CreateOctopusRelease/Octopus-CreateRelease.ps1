@@ -152,8 +152,8 @@ $octopusUrl = $connectedServiceDetails.Url
 
 # Get release notes
 $linkedReleaseNotes = ""
-$wiReleaseNotes = Convert-String $WorkItemReleaseNotes Boolean
-$commentReleaseNotes = Convert-String $ChangesetCommentReleaseNotes Boolean
+$wiReleaseNotes = [System.Convert]::ToBoolean($WorkItemReleaseNotes)
+$commentReleaseNotes = [System.Convert]::ToBoolean($ChangesetCommentReleaseNotes)
 if ($wiReleaseNotes -or $commentReleaseNotes) {
 	$vssEndPoint = Get-ServiceEndPoint -Name "SystemVssConnection" -Context $distributedTaskContext
 	$linkedReleaseNotes = Get-LinkedReleaseNotes $vssEndPoint $commentReleaseNotes $wiReleaseNotes
