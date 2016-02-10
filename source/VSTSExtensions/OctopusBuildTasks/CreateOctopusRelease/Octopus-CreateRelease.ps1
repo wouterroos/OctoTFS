@@ -142,6 +142,12 @@ function Create-ReleaseNotes($linkedItemReleaseNotes) {
 	return "--releaseNotesFile=`"$fileLocation`""
 }
 
+function Output-BuildSummary($octopusUrl) {
+	$markdownFile = Join-Path $PSScriptRoot "Output.md"
+	$markdownContent = "Octopus release for project $ProjectName was created.`n[See the details here]($octopusUrl/app#/projects/$projectname/)"
+	$markdownContent | Out-File $markdownFile
+	Write-Host "##vso[task.addattachment type=Distributedtask.Core.Summary;name=Octopus Release;]$markdownFile"
+}
 
 ### Execution starts here ###
 
@@ -169,5 +175,9 @@ if (-not [System.String]::IsNullOrWhiteSpace($DeployTo)) {
 $octoPath = Get-PathToOctoExe
 Write-Output "Path to Octo.exe = $octoPath"
 Invoke-Tool -Path $octoPath -Arguments "create-release --project=`"$ProjectName`" --server=$octopusUrl $credentialParams $deployToParams $releaseNotesParam $AdditionalArguments"
+
+# Output content to the build summary page
+Output-BuildSummary $octopusUrl
+
 
 Write-Verbose "Finishing Octopus-CreateRelease.ps1"
