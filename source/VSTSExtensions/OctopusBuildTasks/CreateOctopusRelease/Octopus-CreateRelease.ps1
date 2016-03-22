@@ -136,7 +136,7 @@ function Create-ReleaseNotes($linkedItemReleaseNotes) {
 	}
 	
 	$fileguid = [guid]::NewGuid()
-	$fileLocation = Join-Path -Path $env:BUILD_STAGINGDIRECTORY -ChildPath "release-notes-$fileguid.md"
+	$fileLocation = Join-Path -Path $env:SYSTEM_DEFAULTWORKINGDIRECTORY -ChildPath "release-notes-$fileguid.md"
 	$notes | Out-File $fileLocation -Encoding utf8
 	
 	return "--releaseNotesFile=`"$fileLocation`""
