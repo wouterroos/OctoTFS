@@ -1,1 +1,0 @@
-& vset package -m .\extension-manifest.json -o ..\VSOExtensionPackages\
