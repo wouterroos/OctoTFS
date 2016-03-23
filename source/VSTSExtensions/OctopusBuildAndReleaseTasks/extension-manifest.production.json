@@ -1,0 +1,11 @@
+{
+    "id": "octopus-deploy-build-release-tasks",
+    "name": "Octopus Deploy Build and Release Tasks",
+    "version": "Octopus Deploy Build and Release Tasks",
+    "publisher": "octopusdeploy",
+    "public": true,
+    "branding": {
+        "color": "#eee",
+        "theme": "light"
+    }
+}

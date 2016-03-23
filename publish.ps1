@@ -1,22 +1,44 @@
 param (
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$true,HelpMessage="Test or Production")]
+    [ValidateSet("Test", "Production")]
     [string]
-    $accessToken,
-    [switch]$production=$false
+    $environment,
+    [Parameter(Mandatory=$true,HelpMessage="Get a personal access token from https://octopus-deploy.visualstudio.com/_details/security/tokens following the instructions https://www.visualstudio.com/en-us/integrate/extensions/publish/command-line")]
+    [string]
+    $accessToken
 )
 
 $ErrorActionPreference = "Stop"
 
-Write-Output "Updating tfx-cli..."
-& npm up -g tfx-cli
+$buildArtifactsPath = ".\build\Artifacts"
 
-Write-Output "Looking for VSIX file to publish..."
-$vsixFile = Get-ChildItem -Path .\build\Artifacts\*.vsix
-
-if ($production) {
-    Write-Output "Publishing $vsixFile to everyone (public extension)..."
-    & tfx extension publish --vsix $vsixFile --token $accessToken
-} else {
-    Write-Output "Publishing $vsixFile as a private test extension..."
-    & tfx extension publish --vsix $vsixFile --token $accessToken --shareWith "octopus-deploy"
+function UpdateTfxCli() {
+    Write-Host "Updating tfx-cli..."
+    & npm up -g tfx-cli
 }
+
+function PublishVSIX($vsixFile, $environment) {
+    if ($environment -eq "Production") {
+            Write-Output "Publishing $vsixFile to everyone (public extension)..."
+            & tfx extension publish --vsix $vsixFile --token $accessToken --no-prompt
+        } elseif ($environment -eq "Test") {
+            Write-Output "Publishing $vsixFile as a private test extension..."
+            & tfx extension publish --vsix $vsixFile --token $accessToken --shareWith "octopus-deploy" --no-prompt
+        } else {
+            Write-Error "The valid environments are 'Test' and 'Production'"
+    }
+}
+
+function PublishAllExtensions($environment) {
+    $environmentArtifactsPath = "$buildArtifactsPath\$environment"
+    Write-Output "Looking for VSIX file(s) to publish in $environmentArtifactsPath..."
+
+    $vsixFiles = Get-ChildItem $environmentArtifactsPath -Include "*.vsix" -Recurse
+    foreach ($vsixFile in $vsixFiles) {
+        PublishVSIX $vsixFile $environment
+    }
+}
+
+
+UpdateTfxCli
+PublishAllExtensions $environment

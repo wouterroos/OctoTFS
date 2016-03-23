@@ -1,16 +1,23 @@
 {
     "manifestVersion": 1,
-    "id": "octopus-deploy-build-release-tasks",
-    "name": "Octopus Deploy Build and Release Tasks",
-    "version": "0.5.7",
+    "id": "set-by-extension-manifest.environment.json",
+    "name": "set-by-extension-manifest.environment.json",
+    "version": "set-by-extension-manifest.environment.json",
     "publisher": "octopusdeploy",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
     "description": "Build and Release tasks for integrating with Octopus Deploy",
-    "public": true,
+    "public": false,
     "categories": [
         "Build and release"
     ],
     "tags": [
-        "octopus", "octopus deploy", "deploy"
+        "octopus",
+        "octopus deploy",
+        "deploy"
     ],
     "icons": {
         "default": "extension-icon.png"
@@ -27,8 +34,7 @@
         }
     ],
     "content": {
-        "details":
-        {
+        "details": {
             "path": "createoctopusrelease.md"
         }
     },
@@ -45,10 +51,6 @@
         "repository": {
             "uri": "https://github.com/OctopusDeploy/OctoTFS"
         }
-    },
-    "branding": {
-        "color": "#eee",
-        "theme": "light"
     },
     "files": [
         {

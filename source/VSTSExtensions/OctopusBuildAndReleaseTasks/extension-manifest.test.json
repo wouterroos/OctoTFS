@@ -1,0 +1,11 @@
+{
+    "id": "octopus-deploy-build-release-tasks-test",
+    "name": "Octopus Deploy Build and Release Tasks (Test)",
+    "version": "0.0.0",
+    "publisher": "octopusdeploy",
+    "public": false,
+    "branding": {
+        "color": "#434a54",
+        "theme": "dark"
+    }
+}
