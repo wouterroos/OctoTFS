@@ -3,6 +3,9 @@ param (
     [ValidateSet("Test", "Production")]
     [string]
     $environment,
+    [Parameter(Mandatory=$true,HelpMessage="The three number version for this release")]
+    [string]
+    $version,
     [Parameter(Mandatory=$true,HelpMessage="Get a personal access token from https://octopus-deploy.visualstudio.com/_details/security/tokens following the instructions https://www.visualstudio.com/en-us/integrate/extensions/publish/command-line")]
     [string]
     $accessToken
@@ -10,7 +13,7 @@ param (
 
 $ErrorActionPreference = "Stop"
 
-$buildArtifactsPath = ".\build\Artifacts"
+$buildArtifactsPath = "$PSScriptRoot\build\Artifacts"
 
 function UpdateTfxCli() {
     Write-Host "Updating tfx-cli..."
@@ -33,7 +36,7 @@ function PublishAllExtensions($environment) {
     $environmentArtifactsPath = "$buildArtifactsPath\$environment"
     Write-Output "Looking for VSIX file(s) to publish in $environmentArtifactsPath..."
 
-    $vsixFiles = Get-ChildItem $environmentArtifactsPath -Include "*.vsix" -Recurse
+    $vsixFiles = Get-ChildItem $environmentArtifactsPath -Include "*.$version.vsix" -Recurse
     foreach ($vsixFile in $vsixFiles) {
         PublishVSIX $vsixFile $environment
     }

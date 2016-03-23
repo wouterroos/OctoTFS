@@ -10,8 +10,8 @@ param (
 
 $ErrorActionPreference = "Stop"
 
-$extensionsDirectoryPath = ".\source\VSTSExtensions"
-$buildDirectoryPath = ".\build"
+$extensionsDirectoryPath = "$PSScriptRoot\source\VSTSExtensions"
+$buildDirectoryPath = "$PSScriptRoot\build"
 $buildArtifactsPath = "$buildDirectoryPath\Artifacts"
 $buildTempPath = "$buildDirectoryPath\Temp"
 
@@ -65,8 +65,10 @@ function Pack($extensionName) {
     Write-Host "Packing $extensionName..."
     $extensionBuildTempPath = Get-ChildItem $buildTempPath -Include $extensionName -Recurse
     Write-Host "Found extension working directory $extensionBuildTempPath"
+    
     $overridesFile = UpdateExtensionManifestOverrideFile $extensionBuildTempPath $environment $version
     UpdateTaskManifests $extensionBuildTempPath $version
+    
     & tfx extension create --root $extensionBuildTempPath --manifest-globs extension-manifest.json --overridesFile $overridesFile --outputPath "$buildArtifactsPath\$environment" --no-prompt
 }
 
