@@ -26,7 +26,7 @@ function PublishVSIX($vsixFile, $environment) {
             & tfx extension publish --vsix $vsixFile --token $accessToken --no-prompt
         } elseif ($environment -eq "Test") {
             Write-Output "Publishing $vsixFile as a private test extension..."
-            & tfx extension publish --vsix $vsixFile --token $accessToken --shareWith "octopus-deploy" --no-prompt
+            & tfx extension publish --vsix $vsixFile --token $accessToken --shareWith "octopus-deploy-test" --no-prompt
         } else {
             Write-Error "The valid environments are 'Test' and 'Production'"
     }
