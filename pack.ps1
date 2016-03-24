@@ -69,7 +69,8 @@ function Pack($extensionName) {
     $overridesFile = UpdateExtensionManifestOverrideFile $extensionBuildTempPath $environment $version
     UpdateTaskManifests $extensionBuildTempPath $version
     
-    & tfx extension create --root $extensionBuildTempPath --manifest-globs extension-manifest.json --overridesFile $overridesFile --outputPath "$buildArtifactsPath\$environment" --no-prompt --json | Write-Host
+    Write-Host "Creating VSIX using tfx..."
+    & tfx extension create --root $extensionBuildTempPath --manifest-globs extension-manifest.json --overridesFile $overridesFile --outputPath "$buildArtifactsPath\$environment" --no-prompt
 }
 
 UpdateTfxCli

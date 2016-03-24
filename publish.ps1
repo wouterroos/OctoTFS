@@ -23,10 +23,10 @@ function UpdateTfxCli() {
 function PublishVSIX($vsixFile, $environment) {
     if ($environment -eq "Production") {
             Write-Output "Publishing $vsixFile to everyone (public extension)..."
-            & tfx extension publish --vsix $vsixFile --token $accessToken --no-prompt --json | Write-Host
+            & tfx extension publish --vsix $vsixFile --token $accessToken --no-prompt
         } elseif ($environment -eq "Test") {
             Write-Output "Publishing $vsixFile as a private test extension..."
-            & tfx extension publish --vsix $vsixFile --token $accessToken --shareWith "octopus-deploy" --no-prompt --json | Write-Host
+            & tfx extension publish --vsix $vsixFile --token $accessToken --shareWith "octopus-deploy" --no-prompt
         } else {
             Write-Error "The valid environments are 'Test' and 'Production'"
     }
