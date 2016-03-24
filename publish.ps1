@@ -36,9 +36,13 @@ function PublishAllExtensions($environment) {
     $environmentArtifactsPath = "$buildArtifactsPath\$environment"
     Write-Output "Looking for VSIX file(s) to publish in $environmentArtifactsPath..."
 
-    $vsixFiles = Get-ChildItem $environmentArtifactsPath -Include "*.$version.vsix" -Recurse
-    foreach ($vsixFile in $vsixFiles) {
-        PublishVSIX $vsixFile $environment
+    $vsixFiles = Get-ChildItem $environmentArtifactsPath -Include "*$version.vsix" -Recurse
+    if ($vsixFiles) {
+        foreach ($vsixFile in $vsixFiles) {
+            PublishVSIX $vsixFile $environment
+        }
+    } else {
+        Write-Error "There were no VSIX files found for *$version.vsix in $environmentArtifactsPath"
     }
 }
 
