@@ -1,7 +1,7 @@
 {
     "id": "octopus-deploy-build-release-tasks-test",
-    "name": "Octopus Deploy Build and Release Tasks (Test)",
-    "version": "0.0.0",
+    "name": "[Test] Octopus Deploy Build and Release Tasks",
+    "version": "set-by-pack.ps1",
     "publisher": "octopusdeploy",
     "public": false,
     "branding": {

@@ -42,8 +42,11 @@ function UpdateExtensionManifestOverrideFile($extensionBuildTempPath, $environme
     }
 
     Write-Host "Using $overridesSourceFile for overriding the standard extension-manifest.json, updating version to $version..."
+    $manifest = ConvertFrom-JSON -InputObject (Get-Content $overridesSourceFile -Raw)
+    $manifest.version = $version
+
     $overridesFilePath = "$extensionBuildTempPath\extension-manifest.$environment.$version.json"
-    ((Get-Content $overridesSourceFile) -replace "0.0.0", $version) | Out-File $overridesFilePath -Encoding ASCII # tfx-cli doesn't support UTF8 with BOM
+    ConvertTo-JSON $manifest | Out-File $overridesFilePath -Encoding ASCII # tfx-cli doesn't support UTF8 with BOM
     Get-Content $overridesFilePath | Write-Host
     return Get-Item $overridesFilePath
 }
