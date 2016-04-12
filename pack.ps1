@@ -64,13 +64,36 @@ function UpdateTaskManifests($extensionBuildTempPath, $version) {
     }
 }
 
+function OverrideExtensionLogo($extensionBuildTempPath, $environment) {
+    $extensionLogoOverrideFile = Get-Item "$extensionBuildTempPath\extension-icon.$environment.png"
+    if ($extensionLogoOverrideFile) {
+        $directory = Split-Path $extensionLogoOverrideFile
+        $target = Join-Path $directory "extension-icon.png"
+        Write-Host "Replacing extension logo with $extensionLogoOverrideFile..."
+        Move-Item $extensionLogoOverrideFile $target -Force
+    }
+}
+
+function OverrideTaskLogos($extensionBuildTempPath, $environment) {
+    $taskLogoOverrideFiles = Get-ChildItem $extensionBuildTempPath -Include "icon.$environment.png" -Recurse
+    foreach ($logoOverrideFile in $taskLogoOverrideFiles) {
+        $directory = Split-Path $logoOverrideFile
+        $target = Join-Path $directory "icon.png"
+        Write-Host "Replacing task logo $target with $logoOverrideFile..."
+        Move-Item $logoOverrideFile $target -Force
+    }
+}
+
 function Pack($extensionName) {
     Write-Host "Packing $extensionName..."
     $extensionBuildTempPath = Get-ChildItem $buildTempPath -Include $extensionName -Recurse
     Write-Host "Found extension working directory $extensionBuildTempPath"
     
     $overridesFile = UpdateExtensionManifestOverrideFile $extensionBuildTempPath $environment $version
+    OverrideExtensionLogo $extensionBuildTempPath $environment
+    
     UpdateTaskManifests $extensionBuildTempPath $version
+    OverrideTaskLogos $extensionBuildTempPath $environment
     
     Write-Host "Creating VSIX using tfx..."
     & tfx extension create --root $extensionBuildTempPath --manifest-globs extension-manifest.json --overridesFile $overridesFile --outputPath "$buildArtifactsPath\$environment" --no-prompt
