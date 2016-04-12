@@ -65,7 +65,7 @@ function UpdateTaskManifests($extensionBuildTempPath, $version) {
 }
 
 function OverrideExtensionLogo($extensionBuildTempPath, $environment) {
-    $extensionLogoOverrideFile = Get-Item "$extensionBuildTempPath\extension-icon.$environment.png"
+    $extensionLogoOverrideFile = Get-Item "$extensionBuildTempPath\extension-icon.$environment.png" -ErrorAction SilentlyContinue
     if ($extensionLogoOverrideFile) {
         $directory = Split-Path $extensionLogoOverrideFile
         $target = Join-Path $directory "extension-icon.png"
