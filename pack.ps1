@@ -72,6 +72,8 @@ function OverrideExtensionLogo($extensionBuildTempPath, $environment) {
         Write-Host "Replacing extension logo with $extensionLogoOverrideFile..."
         Move-Item $extensionLogoOverrideFile $target -Force
     }
+    
+    Remove-Item "$extensionBuildTempPath\extension-icon.*.png" -Force
 }
 
 function OverrideTaskLogos($extensionBuildTempPath, $environment) {
@@ -82,6 +84,8 @@ function OverrideTaskLogos($extensionBuildTempPath, $environment) {
         Write-Host "Replacing task logo $target with $logoOverrideFile..."
         Move-Item $logoOverrideFile $target -Force
     }
+    
+    Get-ChildItem $extensionBuildTempPath -Include "icon.*.png" -Recurse | Remove-Item -Force
 }
 
 function Pack($extensionName) {
