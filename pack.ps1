@@ -52,7 +52,7 @@ function UpdateExtensionManifestOverrideFile($extensionBuildTempPath, $environme
 }
 
 function UpdateTaskManifests($extensionBuildTempPath, $version) {
-    $taskManifestFiles = Get-ChildItem "$extensionBuildTempPath" -Include "task.json" -Recurse
+    $taskManifestFiles = Get-ChildItem $extensionBuildTempPath -Include "task.json" -Recurse
     foreach ($taskManifestFile in $taskManifestFiles) {
         Write-Host "Updating version to $version in $taskManifestFile..."
         $task = ConvertFrom-JSON -InputObject (Get-Content $taskManifestFile -Raw)
