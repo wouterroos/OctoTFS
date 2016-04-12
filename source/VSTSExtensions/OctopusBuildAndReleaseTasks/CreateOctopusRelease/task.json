@@ -3,6 +3,7 @@
     "name": "OctopusCreateRelease",
     "friendlyName": "Create Octopus Release",
     "description": "Create a Release in Octopus Deploy",
+    "helpMarkDown": "set-by-pack.ps1",
     "category": "Deploy",
     "visibility": [
         "Build",

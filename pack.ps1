@@ -60,6 +60,9 @@ function UpdateTaskManifests($extensionBuildTempPath, $version) {
         $task.version.Major = $netVersion.Major
         $task.version.Minor = $netVersion.Minor
         $task.version.Patch = $netVersion.Build
+        
+        $task.helpMarkDown = "Version: $version. [More Information](http://docs.octopusdeploy.com/display/OD/Use+the+Team+Foundation+Build+Custom+Task)"
+        
         ConvertTo-JSON $task | Out-File $taskManifestFile -Encoding UTF8
     }
 }
