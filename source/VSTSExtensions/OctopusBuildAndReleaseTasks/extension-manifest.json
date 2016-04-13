@@ -54,7 +54,7 @@
     },
     "files": [
         {
-            "path": "CreateOctopusRelease"
+            "path": "Tasks/CreateOctopusRelease"
         },
         {
             "path": "img",
