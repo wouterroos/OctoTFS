@@ -52,7 +52,7 @@ function UpdateExtensionManifestOverrideFile($extensionBuildTempPath, $environme
 }
 
 function UpdateTaskManifests($extensionBuildTempPath, $version) {
-    $taskManifestFiles = Get-ChildItem "$extensionBuildTempPath" -Include "task.json" -Recurse
+    $taskManifestFiles = Get-ChildItem $extensionBuildTempPath -Include "task.json" -Recurse
     foreach ($taskManifestFile in $taskManifestFiles) {
         Write-Host "Updating version to $version in $taskManifestFile..."
         $task = ConvertFrom-JSON -InputObject (Get-Content $taskManifestFile -Raw)
@@ -60,8 +60,35 @@ function UpdateTaskManifests($extensionBuildTempPath, $version) {
         $task.version.Major = $netVersion.Major
         $task.version.Minor = $netVersion.Minor
         $task.version.Patch = $netVersion.Build
+        
+        $task.helpMarkDown = "Version: $version. [More Information](http://docs.octopusdeploy.com/display/OD/Use+the+Team+Foundation+Build+Custom+Task)"
+        
         ConvertTo-JSON $task | Out-File $taskManifestFile -Encoding UTF8
     }
+}
+
+function OverrideExtensionLogo($extensionBuildTempPath, $environment) {
+    $extensionLogoOverrideFile = Get-Item "$extensionBuildTempPath\extension-icon.$environment.png" -ErrorAction SilentlyContinue
+    if ($extensionLogoOverrideFile) {
+        $directory = Split-Path $extensionLogoOverrideFile
+        $target = Join-Path $directory "extension-icon.png"
+        Write-Host "Replacing extension logo with $extensionLogoOverrideFile..."
+        Move-Item $extensionLogoOverrideFile $target -Force
+    }
+    
+    Remove-Item "$extensionBuildTempPath\extension-icon.*.png" -Force
+}
+
+function OverrideTaskLogos($extensionBuildTempPath, $environment) {
+    $taskLogoOverrideFiles = Get-ChildItem $extensionBuildTempPath -Include "icon.$environment.png" -Recurse
+    foreach ($logoOverrideFile in $taskLogoOverrideFiles) {
+        $directory = Split-Path $logoOverrideFile
+        $target = Join-Path $directory "icon.png"
+        Write-Host "Replacing task logo $target with $logoOverrideFile..."
+        Move-Item $logoOverrideFile $target -Force
+    }
+    
+    Get-ChildItem $extensionBuildTempPath -Include "icon.*.png" -Recurse | Remove-Item -Force
 }
 
 function Pack($extensionName) {
@@ -70,7 +97,10 @@ function Pack($extensionName) {
     Write-Host "Found extension working directory $extensionBuildTempPath"
     
     $overridesFile = UpdateExtensionManifestOverrideFile $extensionBuildTempPath $environment $version
+    OverrideExtensionLogo $extensionBuildTempPath $environment
+    
     UpdateTaskManifests $extensionBuildTempPath $version
+    OverrideTaskLogos $extensionBuildTempPath $environment
     
     Write-Host "Creating VSIX using tfx..."
     & tfx extension create --root $extensionBuildTempPath --manifest-globs extension-manifest.json --overridesFile $overridesFile --outputPath "$buildArtifactsPath\$environment" --no-prompt
