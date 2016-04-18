@@ -58,20 +58,20 @@
             "helpMarkDown": "The version of the package; must be a valid [SemVer](http://semver.org/) version; defaults to a timestamp-based version."
         },
         {
+            "name": "SourcePath",
+            "type": "filePath",
+            "label": "Source Path",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The folder containing the files and folders to package. Defaults to working directory."
+        },
+        {
             "name": "OutputPath",
             "type": "filePath",
             "label": "Output Path",
             "defaultValue": "",
             "required": false,
-            "helpMarkDown": "The directory into which the generated package will be written."
-        },
-        {
-            "name": "RootPath",
-            "type": "filePath",
-            "label": "Root Path",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "The root folder containing the files and folders to package."
+            "helpMarkDown": "The directory into which the generated package will be written. Defaults to working directory."
         },
         {
             "name": "NuGetAuthor",

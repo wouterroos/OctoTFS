@@ -6,9 +6,9 @@
 	[string] [Parameter(Mandatory = $false)]
 	$PackageVersion,
 	[string] [Parameter(Mandatory = $false)]
-	$OutputPath,
+	$SourcePath,
 	[string] [Parameter(Mandatory = $false)]
-	$RootPath,
+	$OutputPath,
 	[string] [Parameter(Mandatory = $false)]
 	$Include,
 	[boolean] [Parameter(Mandatory = $false)]
@@ -37,7 +37,7 @@ function Get-PathToOctoExe() {
 # Call Octo.exe
 $octoPath = Get-PathToOctoExe
 Write-Output "Path to Octo.exe = $octoPath"
-$Arguments = "pack --id=`"$PackageId`" --format=$PackageFormat --version=$PackageVersion --outFolder=`"$OutputPath`" --basePath=`"$RootPath`" --author=`"$NugetAuthor`" --title=`"$NugetTitle`" --description=`"$NugetDescription`" --releaseNotes=`"$NuGetReleaseNotes`" --releaseNotesFile=`"$NugetReleaseNotesFile`" --overwrite=$Overwrite" 
+$Arguments = "pack --id=`"$PackageId`" --format=$PackageFormat --version=$PackageVersion --outFolder=`"$OutputPath`" --basePath=`"$SourcePath`" --author=`"$NugetAuthor`" --title=`"$NugetTitle`" --description=`"$NugetDescription`" --releaseNotes=`"$NuGetReleaseNotes`" --releaseNotesFile=`"$NugetReleaseNotesFile`" --overwrite=$Overwrite" 
 if ($Include) {
    ForEach ($IncludePath in $Include.replace("`r", "").split("`n")) {
    $Arguments = $Arguments + " --include=`"$IncludePath`""
