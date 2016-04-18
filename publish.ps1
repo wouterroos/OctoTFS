@@ -8,7 +8,9 @@ param (
     $version,
     [Parameter(Mandatory=$true,HelpMessage="Get a personal access token from https://octopus-deploy.visualstudio.com/_details/security/tokens following the instructions https://www.visualstudio.com/en-us/integrate/extensions/publish/command-line")]
     [string]
-    $accessToken
+    $accessToken,
+    [string]
+    $shareWith="octopus-deploy-test"
 )
 
 $ErrorActionPreference = "Stop"
@@ -25,8 +27,8 @@ function PublishVSIX($vsixFile, $environment) {
             Write-Output "Publishing $vsixFile to everyone (public extension)..."
             & tfx extension publish --vsix $vsixFile --token $accessToken --no-prompt
         } elseif ($environment -eq "Test") {
-            Write-Output "Publishing $vsixFile as a private test extension..."
-            & tfx extension publish --vsix $vsixFile --token $accessToken --shareWith "octopus-deploy-test" --no-prompt
+            Write-Output "Publishing $vsixFile as a private extension, sharing with $shareWith using access token $accessToken"
+            & tfx extension publish --vsix $vsixFile --token $accessToken --share-with $shareWith --no-prompt
         } else {
             Write-Error "The valid environments are 'Test' and 'Production'"
     }

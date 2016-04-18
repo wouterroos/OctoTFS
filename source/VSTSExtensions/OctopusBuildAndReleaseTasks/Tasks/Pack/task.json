@@ -44,10 +44,10 @@
             "defaultValue": "NuPkg",
             "required": true,
             "helpMarkDown": "Package format.",
-            "options": {
+            "options": [{
                 "NuPkg": "NuPkg",
                 "Zip": "Zip"
-            }
+            }]
         },
         {
             "name": "PackageVersion",
