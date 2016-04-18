@@ -22,7 +22,7 @@
 	[string] [Parameter(Mandatory = $false)]
 	$NuGetReleaseNotes,
 	[string] [Parameter(Mandatory = $false)]
-	$NuGetReleaseNotesFile,
+	$NuGetReleaseNotesFile
 )
 
 Write-Verbose "Entering script Octopus-Pack.ps1"
