@@ -4,7 +4,7 @@
     "friendlyName": "Package Your Application",
     "description": "Package your application into a NuPkg or Zip file.",
     "helpMarkDown": "set-by-pack.ps1",
-    "category": "Deploy",
+    "category": "Package",
     "visibility": [
         "Build",
         "Release"
