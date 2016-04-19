@@ -26,6 +26,9 @@
 )
 
 Write-Verbose "Entering script Octopus-Pack.ps1"
+
+Write-Verbose "Importing modules"
+Import-Module "Microsoft.TeamFoundation.DistributedTask.Task.Internal"
 Import-Module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
 # Returns a path to the Octo.exe file
