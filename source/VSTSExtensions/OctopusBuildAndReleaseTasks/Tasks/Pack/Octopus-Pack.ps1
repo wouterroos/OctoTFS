@@ -26,6 +26,7 @@
 )
 
 Write-Verbose "Entering script Octopus-Pack.ps1"
+Import-Module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
 # Returns a path to the Octo.exe file
 function Get-PathToOctoExe() {
