@@ -11,7 +11,7 @@
 	$OutputPath,
 	[string] [Parameter(Mandatory = $false)]
 	$Include,
-	[boolean] [Parameter(Mandatory = $false)]
+	[string] [Parameter(Mandatory = $false)]
 	$Overwrite,
 	[string] [Parameter(Mandatory = $false)]
 	$NuGetAuthor,
@@ -37,6 +37,7 @@ function Get-PathToOctoExe() {
 # Call Octo.exe
 $octoPath = Get-PathToOctoExe
 Write-Output "Path to Octo.exe = $octoPath"
+$Overwrite = [System.Convert]::ToBoolean($Overwrite)
 $Arguments = "pack --id=`"$PackageId`" --format=$PackageFormat --version=$PackageVersion --outFolder=`"$OutputPath`" --basePath=`"$SourcePath`" --author=`"$NugetAuthor`" --title=`"$NugetTitle`" --description=`"$NugetDescription`" --releaseNotes=`"$NuGetReleaseNotes`" --releaseNotesFile=`"$NugetReleaseNotesFile`" --overwrite=$Overwrite" 
 if ($Include) {
    ForEach ($IncludePath in $Include.replace("`r", "").split("`n")) {
