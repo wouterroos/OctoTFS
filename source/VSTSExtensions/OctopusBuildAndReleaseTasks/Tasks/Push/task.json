@@ -1,0 +1,143 @@
+﻿{
+    "id": "d05ad9a2-5d9e-4a1c-a887-14034334d6f2",
+    "name": "OctopusPush",
+    "friendlyName": "Push Package to Octopus",
+    "description": "Push your NuGet or Zip package to your Octopus Deploy Server",
+    "helpMarkDown": "set-by-pack.ps1",
+    "category": "Package",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "author": "Octopus Deploy",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 0
+    },
+    "minimumAgentVersion": "1.82.0",
+    "groups": [
+        {
+            "name": "advanced",
+            "displayName": "Advanced Options",
+            "isExpanded": false
+        }
+    ],
+    "inputs": [
+        {
+            "name": "Package",
+            "type": "multiLine",
+            "label": "Package",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Package file to push. To push multiple packages, enter on multiple lines."
+        },
+        {
+            "name": "PackageFormat",
+            "type": "pickList",
+            "label": "Package Format",
+            "defaultValue": "NuPkg",
+            "required": true,
+            "helpMarkDown": "Package format.",
+            "options": [{
+                "NuPkg": "NuPkg",
+                "Zip": "Zip"
+            }]
+        },
+        {
+            "name": "PackageVersion",
+            "type": "string",
+            "label": "Package Version",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The version of the package; must be a valid [SemVer](http://semver.org/) version; defaults to a timestamp-based version."
+        },
+        {
+            "name": "SourcePath",
+            "type": "filePath",
+            "label": "Source Path",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The folder containing the files and folders to package. Defaults to working directory."
+        },
+        {
+            "name": "OutputPath",
+            "type": "filePath",
+            "label": "Output Path",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The directory into which the generated package will be written. Defaults to working directory."
+        },
+        {
+            "name": "NuGetAuthor",
+            "type": "string",
+            "label": "Author",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Add an author to the NuGet package metadata.",
+            "groupName": "nuget"
+        },
+        {
+            "name": "NuGetTitle",
+            "type": "string",
+            "label": "Title",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Add a title to the NuGet package metadata.",
+            "groupName": "nuget"
+        },
+        {
+            "name": "NuGetDescription",
+            "type": "string",
+            "label": "Description",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Add a description to the NuGet package metadata.",
+            "groupName": "nuget"
+        },
+        {
+            "name": "NuGetReleaseNotes",
+            "type": "string",
+            "label": "Release Notes",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Add release notes to the NuGet package metadata.",
+            "groupName": "nuget"
+        },
+        {
+            "name": "NuGetReleaseNotesFile",
+            "type": "filePath",
+            "label": "Release Notes File",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "A file containing release notes to be added to the NuGet package metadata.",
+            "groupName": "nuget"
+        },
+        {
+            "name": "Include",
+            "type": "multiLine",
+            "label": "Include",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "File patterns to include, relative to the root path. e.g. /bin/*.dll",
+            "groupName": "advanced"
+        },
+        {
+            "name": "Overwrite",
+            "type": "boolean",
+            "label": "Overwrite",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Allow an existing package of the same ID and version to be overwritten.",
+            "groupName": "advanced"
+        }
+    ],
+    "instanceNameFormat": "Package $(PackageId)",
+    "execution": {
+        "PowerShell": {
+            "target": "$(currentDirectory)\\Octopus-Pack.ps1",
+            "argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+        }
+    }
+}
