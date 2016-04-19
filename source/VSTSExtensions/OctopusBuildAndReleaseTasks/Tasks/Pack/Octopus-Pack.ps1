@@ -26,7 +26,13 @@
 )
 
 Write-Verbose "Entering script Octopus-Pack.ps1"
-Import-Module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
+
+$agentWorkerModulesPath = "$($env:AGENT_HOMEDIRECTORY)\agent\worker\Modules"
+$tfsInternalModulePath = "$agentWorkerModulesPath\Microsoft.TeamFoundation.DistributedTask.Task.Internal\Microsoft.TeamFoundation.DistributedTask.Task.Internal.dll"
+$tfsCommonModulePath = "$agentWorkerModulesPath\Microsoft.TeamFoundation.DistributedTask.Task.Common\Microsoft.TeamFoundation.DistributedTask.Task.Common.dll"
+Write-Verbose "Importing modules"
+Import-Module $tfsInternalModulePath
+Import-Module $tfsCommonModulePath
 
 # Returns a path to the Octo.exe file
 function Get-PathToOctoExe() {
