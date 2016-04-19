@@ -1,49 +1,28 @@
 ﻿param(
 	[string] [Parameter(Mandatory = $true)]
-	$PackageId,
+	$ConnectedServiceName,
 	[string] [Parameter(Mandatory = $true)]
-	$PackageFormat,
+	$Package,
 	[string] [Parameter(Mandatory = $false)]
-	$PackageVersion,
+	$Replace,
 	[string] [Parameter(Mandatory = $false)]
-	$SourcePath,
-	[string] [Parameter(Mandatory = $false)]
-	$OutputPath,
-	[string] [Parameter(Mandatory = $false)]
-	$Include,
-	[boolean] [Parameter(Mandatory = $false)]
-	$Overwrite,
-	[string] [Parameter(Mandatory = $false)]
-	$NuGetAuthor,
-	[string] [Parameter(Mandatory = $false)]
-	$NugetTitle,
-	[string] [Parameter(Mandatory = $false)]
-	$NugetDescription,
-	[string] [Parameter(Mandatory = $false)]
-	$NuGetReleaseNotes,
-	[string] [Parameter(Mandatory = $false)]
-	$NuGetReleaseNotesFile
+	$AdditionalArguments
 )
 
-Write-Verbose "Entering script Octopus-Pack.ps1"
+Write-Verbose "Entering script Octopus-Push.ps1"
 
-# Returns a path to the Octo.exe file
-function Get-PathToOctoExe() {
-	$PSScriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.ScriptBlock.File
-	$targetPath = Join-Path -Path $PSScriptRoot -ChildPath "Octo.exe" 
-	return $targetPath
-}
+#Import Octopus Common functions
+$OctopusCommonPS = Join-Path -Path ((Get-Item $PSScriptRoot).Parent.Parent) -ChildPath "Common\Octopus-VSTS.ps1"
+. $OctopusCommonPs
+
+$connectedServiceDetails = Get-ServiceEndpoint -Name "$ConnectedServiceName" -Context $distributedTaskContext
+$credentialArgs = Get-OctoCredentialArgs($connectedServiceDetails)
+$octopusUrl = $connectedServiceDetails.Url
 
 # Call Octo.exe
-$octoPath = Get-PathToOctoExe
+$octoPath = Get-OctoExePath
 Write-Output "Path to Octo.exe = $octoPath"
-$Arguments = "pack --id=`"$PackageId`" --format=$PackageFormat --version=$PackageVersion --outFolder=`"$OutputPath`" --basePath=`"$SourcePath`" --author=`"$NugetAuthor`" --title=`"$NugetTitle`" --description=`"$NugetDescription`" --releaseNotes=`"$NuGetReleaseNotes`" --releaseNotesFile=`"$NugetReleaseNotesFile`" --overwrite=$Overwrite" 
-if ($Include) {
-   ForEach ($IncludePath in $Include.replace("`r", "").split("`n")) {
-   $Arguments = $Arguments + " --include=`"$IncludePath`""
-   }
-}
+$Arguments = "push --package=`"$Package`" --server=$octopusUrl $credentialArgs --replace-existing=$Replace $AdditionalArguments"
+Invoke-VstsTool -FileName $octoPath -Arguments $Arguments
 
-Invoke-Tool -Path $octoPath -Arguments $Arguments 
-
-Write-Verbose "Completed Octopus-Pack.ps1"
+Write-Verbose "Completed Octopus-Push.ps1"

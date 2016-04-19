@@ -15,7 +15,7 @@
         "Minor": 0,
         "Patch": 0
     },
-    "minimumAgentVersion": "1.82.0",
+    "minimumAgentVersion": "1.95.0",
     "groups": [
         {
             "name": "advanced",
@@ -25,6 +25,14 @@
     ],
     "inputs": [
         {
+            "name": "ConnectedServiceName",
+            "type": "connectedService:Generic",
+            "label": "Octopus Deploy Server",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Octopus Deploy server connection"
+        },
+        {
             "name": "Package",
             "type": "multiLine",
             "label": "Package",
@@ -33,109 +41,27 @@
             "helpMarkDown": "Package file to push. To push multiple packages, enter on multiple lines."
         },
         {
-            "name": "PackageFormat",
-            "type": "pickList",
-            "label": "Package Format",
-            "defaultValue": "NuPkg",
-            "required": true,
-            "helpMarkDown": "Package format.",
-            "options": [{
-                "NuPkg": "NuPkg",
-                "Zip": "Zip"
-            }]
-        },
-        {
-            "name": "PackageVersion",
-            "type": "string",
-            "label": "Package Version",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "The version of the package; must be a valid [SemVer](http://semver.org/) version; defaults to a timestamp-based version."
-        },
-        {
-            "name": "SourcePath",
-            "type": "filePath",
-            "label": "Source Path",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "The folder containing the files and folders to package. Defaults to working directory."
-        },
-        {
-            "name": "OutputPath",
-            "type": "filePath",
-            "label": "Output Path",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "The directory into which the generated package will be written. Defaults to working directory."
-        },
-        {
-            "name": "NuGetAuthor",
-            "type": "string",
-            "label": "Author",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Add an author to the NuGet package metadata.",
-            "groupName": "nuget"
-        },
-        {
-            "name": "NuGetTitle",
-            "type": "string",
-            "label": "Title",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Add a title to the NuGet package metadata.",
-            "groupName": "nuget"
-        },
-        {
-            "name": "NuGetDescription",
-            "type": "string",
-            "label": "Description",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Add a description to the NuGet package metadata.",
-            "groupName": "nuget"
-        },
-        {
-            "name": "NuGetReleaseNotes",
-            "type": "string",
-            "label": "Release Notes",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Add release notes to the NuGet package metadata.",
-            "groupName": "nuget"
-        },
-        {
-            "name": "NuGetReleaseNotesFile",
-            "type": "filePath",
-            "label": "Release Notes File",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "A file containing release notes to be added to the NuGet package metadata.",
-            "groupName": "nuget"
-        },
-        {
-            "name": "Include",
-            "type": "multiLine",
-            "label": "Include",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "File patterns to include, relative to the root path. e.g. /bin/*.dll",
-            "groupName": "advanced"
-        },
-        {
-            "name": "Overwrite",
+            "name": "Replace",
             "type": "boolean",
-            "label": "Overwrite",
-            "defaultValue": "false",
+            "label": "Replace Existing",
+            "defaultValue": "False",
+            "required": true,
+            "helpMarkDown": "If the package already exists in the repository, the default behavior is to reject the new package being pushed. Set this flag to 'True' to overwrite the existing package."
+        },
+        {
+            "name": "AdditionalArguments",
+            "type": "string",
+            "label": "Additional Arguments",
+            "defaultValue": "",
             "required": false,
-            "helpMarkDown": "Allow an existing package of the same ID and version to be overwritten.",
+            "helpMarkDown": "Additional arguments to be supplied to Octo.exe. See [Octo.exe Command Line documentation](http://docs.octopusdeploy.com/display/OD/Pushing+packages) for available parameters.",
             "groupName": "advanced"
         }
     ],
-    "instanceNameFormat": "Package $(PackageId)",
+    "instanceNameFormat": "Push Packages to Octopus",
     "execution": {
-        "PowerShell": {
-            "target": "$(currentDirectory)\\Octopus-Pack.ps1",
+        "PowerShell3": {
+            "target": "Octopus-Push.ps1",
             "argumentFormat": "",
             "workingDirectory": "$(currentDirectory)"
         }
