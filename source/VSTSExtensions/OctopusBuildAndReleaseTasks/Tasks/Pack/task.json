@@ -39,15 +39,11 @@
         },
         {
             "name": "PackageFormat",
-            "type": "pickList",
+            "type": "string",
             "label": "Package Format",
             "required": true,
             "defaultValue": "NuPkg",
-            "helpMarkDown": "Package format.",
-            "options": {
-                "NuPkg":"NuPkg",
-                "Zip":"Zip"
-            }
+            "helpMarkDown": "Package format. Must be either NuPkg or Zip."
         },
         {
             "name": "PackageVersion",
