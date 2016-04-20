@@ -7,7 +7,7 @@ Write-Verbose "Entering script Octopus-Push.ps1"
 $OctopusCommonPS = Join-Path -Path ((Get-Item $PSScriptRoot).Parent.Parent) -ChildPath "Common\Octopus-VSTS.ps1"
 . $OctopusCommonPs
 
-$connectedServiceDetails = Get-ServiceEndpoint -Name "$ConnectedServiceName" -Context $distributedTaskContext
+$connectedServiceDetails = Get-VstsEndpoint -Name "$ConnectedServiceName" -Require
 $credentialArgs = Get-OctoCredentialArgs($connectedServiceDetails)
 $octopusUrl = $connectedServiceDetails.Url
 

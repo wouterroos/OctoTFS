@@ -5,11 +5,11 @@ function Get-OctoExePath() {
 
 # Returns the Octo.exe arguments for credentials
 function Get-OctoCredentialArgs($serviceDetails) {
-	$pwd = $serviceDetails.Authorization.Parameters.Password
+	$pwd = $serviceDetails.Auth.Parameters.Password
 	if ($pwd.StartsWith("API-")) {
         return "--apiKey=$pwd"
     } else {
-        $un = $serviceDetails.Authorization.Parameters.Username
+        $un = $serviceDetails.Auth.Parameters.Username
         return "--user=$un --pass=$pwd"
     }
 }
