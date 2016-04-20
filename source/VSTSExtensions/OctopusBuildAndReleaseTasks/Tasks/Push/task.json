@@ -61,9 +61,7 @@
     "instanceNameFormat": "Push Packages to Octopus",
     "execution": {
         "PowerShell3": {
-            "target": "Octopus-Push.ps1",
-            "argumentFormat": "",
-            "workingDirectory": "$(currentDirectory)"
+            "target": "Octopus-Push.ps1"
         }
     }
 }
