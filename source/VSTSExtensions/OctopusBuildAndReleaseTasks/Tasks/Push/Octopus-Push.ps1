@@ -2,8 +2,10 @@
 param()
 
 # Returns a path to the Octo.exe file
-function Get-OctoExePath() {
-    return Join-Path $PSScriptRoot "Octo.exe"
+function Get-PathToOctoExe() {
+    $PSScriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.ScriptBlock.File
+    $targetPath = Join-Path -Path $PSScriptRoot -ChildPath "Octo.exe"
+    return $targetPath
 }
 
 # Returns the Octo.exe arguments for credentials
