@@ -3,9 +3,21 @@ param()
 
 Write-Verbose "Entering script Octopus-Push.ps1"
 
-#Import Octopus Common functions
-$OctopusCommonPS = Join-Path -Path ((Get-Item $PSScriptRoot).Parent.Parent) -ChildPath "Common\Octopus-VSTS.ps1"
-. $OctopusCommonPs
+# Returns a path to the Octo.exe file
+function Get-OctoExePath() {
+    return Join-Path $PSScriptRoot "Octo.exe"
+}
+
+# Returns the Octo.exe arguments for credentials
+function Get-OctoCredentialArgs($serviceDetails) {
+	$pwd = $serviceDetails.Auth.Parameters.Password
+	if ($pwd.StartsWith("API-")) {
+        return "--apiKey=$pwd"
+    } else {
+        $un = $serviceDetails.Auth.Parameters.Username
+        return "--user=$un --pass=$pwd"
+    }
+}
 
 $connectedServiceDetails = Get-VstsEndpoint -Name "$ConnectedServiceName" -Require
 $credentialArgs = Get-OctoCredentialArgs($connectedServiceDetails)
