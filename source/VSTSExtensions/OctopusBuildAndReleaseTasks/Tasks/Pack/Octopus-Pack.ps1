@@ -1,38 +1,7 @@
-﻿param(
-	[string] [Parameter(Mandatory = $true)]
-	$PackageId,
-	[string] [Parameter(Mandatory = $true)]
-	$PackageFormat,
-	[string] [Parameter(Mandatory = $false)]
-	$PackageVersion,
-	[string] [Parameter(Mandatory = $false)]
-	$SourcePath,
-	[string] [Parameter(Mandatory = $false)]
-	$OutputPath,
-	[string] [Parameter(Mandatory = $false)]
-	$Include,
-	[string] [Parameter(Mandatory = $false)]
-	$Overwrite,
-	[string] [Parameter(Mandatory = $false)]
-	$NuGetAuthor,
-	[string] [Parameter(Mandatory = $false)]
-	$NugetTitle,
-	[string] [Parameter(Mandatory = $false)]
-	$NugetDescription,
-	[string] [Parameter(Mandatory = $false)]
-	$NuGetReleaseNotes,
-	[string] [Parameter(Mandatory = $false)]
-	$NuGetReleaseNotesFile
-)
+﻿[CmdletBinding()]
+param()
 
 Write-Verbose "Entering script Octopus-Pack.ps1"
-
-$agentWorkerModulesPath = "$($env:AGENT_HOMEDIRECTORY)\agent\worker\Modules"
-$tfsInternalModulePath = "$agentWorkerModulesPath\Microsoft.TeamFoundation.DistributedTask.Task.Internal\Microsoft.TeamFoundation.DistributedTask.Task.Internal.dll"
-$tfsCommonModulePath = "$agentWorkerModulesPath\Microsoft.TeamFoundation.DistributedTask.Task.Common\Microsoft.TeamFoundation.DistributedTask.Task.Common.dll"
-Write-Verbose "Importing modules"
-Import-Module $tfsInternalModulePath
-Import-Module $tfsCommonModulePath
 
 # Returns a path to the Octo.exe file
 function Get-PathToOctoExe() {
@@ -52,6 +21,6 @@ if ($Include) {
    }
 }
 
-Invoke-Tool -Path $octoPath -Arguments $Arguments 
+Invoke-VstsTool -FileName $octoPath -Arguments $Arguments
 
 Write-Verbose "Completed Octopus-Pack.ps1"

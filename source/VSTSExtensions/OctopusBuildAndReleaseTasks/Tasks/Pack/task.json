@@ -139,10 +139,8 @@
     ],
     "instanceNameFormat": "Package $(PackageId)",
     "execution": {
-        "PowerShell": {
-            "target": "$(currentDirectory)\\Octopus-Pack.ps1",
-            "argumentFormat": "",
-            "workingDirectory": "$(currentDirectory)"
+        "PowerShell3": {
+            "target": "Octopus-Pack.ps1"
         }
     }
 }
