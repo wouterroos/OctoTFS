@@ -41,13 +41,13 @@
             "name": "PackageFormat",
             "type": "pickList",
             "label": "Package Format",
-            "defaultValue": "NuPkg",
             "required": true,
+            "defaultValue": "NuPkg",
             "helpMarkDown": "Package format.",
-            "options": [
-                { "NuPkg": "NuPkg" },
-                { "Zip": "Zip"}
-            ]
+            "options": {
+                "NuPkg":"NuPkg",
+                "Zip":"Zip"
+            }
         },
         {
             "name": "PackageVersion",
