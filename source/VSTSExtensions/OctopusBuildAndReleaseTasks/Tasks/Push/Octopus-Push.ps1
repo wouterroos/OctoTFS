@@ -1,13 +1,5 @@
-﻿param(
-	[string] [Parameter(Mandatory = $true)]
-	$ConnectedServiceName,
-	[string] [Parameter(Mandatory = $true)]
-	$Package,
-	[string] [Parameter(Mandatory = $false)]
-	$Replace,
-	[string] [Parameter(Mandatory = $false)]
-	$AdditionalArguments
-)
+﻿[CmdletBinding()]
+param()
 
 Write-Verbose "Entering script Octopus-Push.ps1"
 
