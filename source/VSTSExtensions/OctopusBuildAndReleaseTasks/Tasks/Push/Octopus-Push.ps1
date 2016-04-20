@@ -1,8 +1,6 @@
 ﻿[CmdletBinding()]
 param()
 
-Write-Verbose "Entering script Octopus-Push.ps1"
-
 # Returns a path to the Octo.exe file
 function Get-OctoExePath() {
     return Join-Path $PSScriptRoot "Octo.exe"
@@ -19,14 +17,26 @@ function Get-OctoCredentialArgs($serviceDetails) {
     }
 }
 
-$connectedServiceDetails = Get-VstsEndpoint -Name "$ConnectedServiceName" -Require
-$credentialArgs = Get-OctoCredentialArgs($connectedServiceDetails)
-$octopusUrl = $connectedServiceDetails.Url
+## Execution starts here
 
-# Call Octo.exe
-$octoPath = Get-OctoExePath
-Write-Output "Path to Octo.exe = $octoPath"
-$Arguments = "push --package=`"$Package`" --server=$octopusUrl $credentialArgs --replace-existing=$Replace $AdditionalArguments"
-Invoke-VstsTool -FileName $octoPath -Arguments $Arguments
+Trace-VstsEnteringInvocation $MyInvocation
 
-Write-Verbose "Completed Octopus-Push.ps1"
+try {
+
+    $ConnectedServiceName = Get-VstsInput -Name ConnectedServiceName -Require
+    $Package = Get-VstsInput -Name Package -Require
+    $AdditionalArguments = Get-VstsInput -Name AdditionalArguments
+
+    $connectedServiceDetails = Get-VstsEndpoint -Name "$ConnectedServiceName" -Require
+    $credentialArgs = Get-OctoCredentialArgs($connectedServiceDetails)
+    $octopusUrl = $connectedServiceDetails.Url
+
+    # Call Octo.exe
+    $octoPath = Get-OctoExePath
+    Write-Output "Path to Octo.exe = $octoPath"
+    $Arguments = "push --package=`"$Package`" --server=$octopusUrl $credentialArgs --replace-existing=$Replace $AdditionalArguments"
+    Invoke-VstsTool -FileName $octoPath -Arguments $Arguments
+
+} finally {
+    Trace-VstsLeavingInvocation $MyInvocation
+}
