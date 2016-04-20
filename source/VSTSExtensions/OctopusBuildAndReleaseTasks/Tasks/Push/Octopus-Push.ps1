@@ -34,7 +34,7 @@ try {
     $octopusUrl = $connectedServiceDetails.Url
 
     # Call Octo.exe
-    $octoPath = Get-OctoExePath
+    $octoPath = Get-PathToOctoExe
     Write-Output "Path to Octo.exe = $octoPath"
     $Arguments = "push --package=`"$Package`" --server=$octopusUrl $credentialArgs --replace-existing=$Replace $AdditionalArguments"
     Invoke-VstsTool -FileName $octoPath -Arguments $Arguments
