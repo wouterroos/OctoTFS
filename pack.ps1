@@ -10,17 +10,25 @@ param (
 
 $ErrorActionPreference = "Stop"
 
-$extensionsDirectoryPath = "$PSScriptRoot\source\VSTSExtensions"
-$buildDirectoryPath = "$PSScriptRoot\build"
+$sourcePath = "$PSScriptRoot\source" 
+$extensionsDirectoryPath = Join-Path $sourcePath "VSTSExtensions"
 $buildArtifactsPath = "$buildDirectoryPath\Artifacts"
+$buildDirectoryPath = "$PSScriptRoot\build"
 $buildTempPath = "$buildDirectoryPath\Temp"
+$tasksTempPath = Join-Path -Path $buildTempPath -ChildPath "VSTSExtensions" | Join-Path -ChildPath "OctopusBuildAndReleaseTasks" | Join-Path -ChildPath "Tasks"
 
 function UpdateTfxCli() {
     Write-Host "Updating tfx-cli..."
     & npm up -g tfx-cli
 }
 
-function Prepare() {
+function InstallNodeModules() {
+   Push-Location -Path "$sourcePath" 
+   & npm install
+   Pop-Location
+}
+
+function PrepareBuildDirectory() {
     if (Test-Path $buildDirectoryPath) {
         $buildDirectory = Get-Item "$buildDirectoryPath"
         Write-Host "Cleaning $buildDirectory..."
@@ -28,8 +36,27 @@ function Prepare() {
     }
     
     New-Item -Type Directory -Path $buildTempPath | Out-Null
-    
     Copy-Item $extensionsDirectoryPath -Destination $buildTempPath -Recurse
+}
+
+
+function CopyCommonTaskItems() {
+   Write-Host "Copying common task components into each task"
+   # for each task
+   ForEach($TaskPath in Get-ChildItem -Path $tasksTempPath -Exclude "Common") {
+
+      # Copy VSTS PowerShell Modules from node_modules to each task's ps_modules directory
+      $VstsSdkModuleNpmPath = Join-Path -Path $sourcePath -ChildPath "node_modules" | Join-Path -ChildPath "vsts-task-sdk" | Join-Path -ChildPath "VstsTaskSdk"
+      $PSModulesPath = Join-Path $TaskPath "ps_modules"
+      $VstsSdkModulePath = Join-Path $PSModulesPath "VstsTaskSdk"
+      New-Item -Type Directory -Path $PSModulesPath -Force | Out-Null
+      Copy-Item -Path $VstsSdkModuleNpmPath -Destination $VstsSdkModulePath -Recurse -Force
+
+      #Copy common task items into each task 
+      ForEach($CommonFile in Get-ChildItem -Path (Join-Path $tasksTempPath "Common") -File) {
+         Copy-Item -Path $CommonFile.FullName -Destination $TaskPath | Out-Null 
+      }
+   }
 }
 
 function UpdateExtensionManifestOverrideFile($extensionBuildTempPath, $environment, $version) {
@@ -107,5 +134,7 @@ function Pack($extensionName) {
 }
 
 UpdateTfxCli
-Prepare
+InstallNodeModules
+PrepareBuildDirectory
+CopyCommonTaskItems
 Pack "OctopusBuildAndReleaseTasks"

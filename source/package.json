@@ -1,0 +1,13 @@
+{
+  "name": "octopus-vsts",
+  "version": "1.0.0",
+  "description": "Octopus Deploy VSTS extension",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OctopusDeploy/OctoTFS.git"
+  },
+  "author": "Octopus Deploy",
+  "dependencies": {
+    "vsts-task-sdk": "^0.6.2"
+  }
+}

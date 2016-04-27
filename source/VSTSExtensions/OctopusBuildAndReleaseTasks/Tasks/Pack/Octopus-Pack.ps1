@@ -1,18 +1,11 @@
 ﻿[CmdletBinding()]
 param()
 
-# Returns a path to the Octo.exe file
-function Get-PathToOctoExe() {
-    $PSScriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.ScriptBlock.File
-    $targetPath = Join-Path -Path $PSScriptRoot -ChildPath "Octo.exe"
-    return $targetPath
-}
-
-## Execution starts here
-
 Trace-VstsEnteringInvocation $MyInvocation
 
 try {
+
+    . .\Octopus-VSTS.ps1
 
     $PackageId = Get-VstsInput -Name PackageId -Require
     $PackageFormat = Get-VstsInput -Name PackageFormat -Require
@@ -28,8 +21,7 @@ try {
     $Include = Get-VstsInput -Name Include
 
     # Call Octo.exe
-    $octoPath = Get-PathToOctoExe
-    Write-Output "Path to Octo.exe = $octoPath"
+    $octoPath = Get-OctoExePath
     $Arguments = "pack --id=`"$PackageId`" --format=$PackageFormat --version=$PackageVersion --outFolder=`"$OutputPath`" --basePath=`"$SourcePath`" --author=`"$NugetAuthor`" --title=`"$NugetTitle`" --description=`"$NugetDescription`" --releaseNotes=`"$NuGetReleaseNotes`" --releaseNotesFile=`"$NugetReleaseNotesFile`" --overwrite=$Overwrite"
     if ($Include) {
        ForEach ($IncludePath in $Include.replace("`r", "").split("`n")) {
