@@ -12,8 +12,8 @@ $ErrorActionPreference = "Stop"
 
 $sourcePath = "$PSScriptRoot\source" 
 $extensionsDirectoryPath = Join-Path $sourcePath "VSTSExtensions"
-$buildArtifactsPath = "$buildDirectoryPath\Artifacts"
 $buildDirectoryPath = "$PSScriptRoot\build"
+$buildArtifactsPath = "$buildDirectoryPath\Artifacts"
 $buildTempPath = "$buildDirectoryPath\Temp"
 $tasksTempPath = Join-Path -Path $buildTempPath -ChildPath "VSTSExtensions" | Join-Path -ChildPath "OctopusBuildAndReleaseTasks" | Join-Path -ChildPath "Tasks"
 
