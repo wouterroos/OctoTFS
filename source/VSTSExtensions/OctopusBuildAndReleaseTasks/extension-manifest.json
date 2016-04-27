@@ -77,6 +77,16 @@
             }
         },
         {
+            "id": "octopus-deploy",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "Tasks/Deploy"
+            }
+        },
+        {
             "id": "octopus-pack",
             "type": "ms.vss-distributed-task.task",
             "targets": [
