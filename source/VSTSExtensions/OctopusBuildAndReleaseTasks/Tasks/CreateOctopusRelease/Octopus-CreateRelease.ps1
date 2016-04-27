@@ -1,20 +1,5 @@
 ﻿[CmdletBinding()]
-param(
-	[string] [Parameter(Mandatory = $true)]
-	$ConnectedServiceName,
-	[string] [Parameter(Mandatory = $true)]
-	$ProjectName,
-	[string] [Parameter(Mandatory = $false)]
-	$ChangesetCommentReleaseNotes,
-	[string] [Parameter(Mandatory = $false)]
-	$WorkItemReleaseNotes,
-	[string] [Parameter(Mandatory = $false)]
-	$CustomReleaseNotes,
-	[string] [Parameter(Mandatory = $false)]
-	$DeployTo,
-	[string] [Parameter(Mandatory = $false)]
-	$AdditionalArguments
-)
+param()
 
 # Get release notes from linked changesets and work items
 function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
