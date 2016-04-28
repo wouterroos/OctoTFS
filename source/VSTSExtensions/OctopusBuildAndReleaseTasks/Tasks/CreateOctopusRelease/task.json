@@ -23,6 +23,11 @@
             "isExpanded": true
         },
         {
+            "name": "deployment",
+            "displayName": "Deployment",
+            "isExpanded": false
+        },
+        {
             "name": "additional",
             "displayName": "Additional Options",
             "isExpanded": false
@@ -44,6 +49,22 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "Octopus Deploy Project Name"
+        },
+        {
+            "name": "ReleaseNumber",
+            "type": "string",
+            "label": "Release Number",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The number to use for this release"
+        },
+        {
+            "name": "Channel",
+            "type": "string",
+            "label": "Channel",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The [channel](http://docs.octopusdeploy.com/display/OD/Channels) to use for the release"
         },
         {
             "name": "ChangesetCommentReleaseNotes",
@@ -79,7 +100,16 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Deploy the release to this environment after creating it",
-            "groupName": "additional"
+            "groupName": "deployment"
+        },
+        {
+            "name": "DeploymentProgress",
+            "type": "boolean",
+            "label": "Show Deployment Progress",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "If checked, the build process will only succeed if the deployment is successful. Output from the deployment will appear in the build output.",
+            "groupName": "deployment"
         },
         {
             "name": "AdditionalArguments",
@@ -87,7 +117,7 @@
             "label": "Additional Octo.exe Arguments ",
             "defaultValue": "",
             "required": false,
-            "helpMarkDown": "Additional arguments to send to octo.exe",
+            "helpMarkDown": "Additional arguments to be supplied to Octo.exe. See [Octo.exe Command Line documentation](http://docs.octopusdeploy.com/display/OD/Creating+releases) for available parameters.",
             "groupName": "additional"
         }
     ],

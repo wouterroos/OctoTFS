@@ -112,10 +112,13 @@ try {
 
     $ConnectedServiceName = Get-VstsInput -Name ConnectedServiceName -Require
     $ProjectName = Get-VstsInput -Name ProjectName -Require
-    $ChangesetCommentReleaseNotes = Get-VstsInput -Name ChangesetCommentReleaseNotes
-    $WorkItemReleaseNotes = Get-VstsInput -Name WorkItemReleaseNotes
+    $ReleaseNumber = Get-VstsInput -Name ReleaseNumber
+    $Channel = Get-VstsInput -Name Channel
+    $ChangesetCommentReleaseNotes = Get-VstsInput -Name ChangesetCommentReleaseNotes -AsBool
+    $WorkItemReleaseNotes = Get-VstsInput -Name WorkItemReleaseNotes -AsBool
     $CustomReleaseNotes = Get-VstsInput -Name CustomReleaseNotes
     $DeployTo = Get-VstsInput -Name DeployTo
+    $DeploymentProgress = Get-VstsInput -Name DeploymentProgress -AsBool
     $AdditionalArguments = Get-VstsInput -Name AdditionalArguments
 
     # Get required parameters
@@ -125,22 +128,20 @@ try {
 
     # Get release notes
     $linkedReleaseNotes = ""
-    $wiReleaseNotes = [System.Convert]::ToBoolean($WorkItemReleaseNotes)
-    $commentReleaseNotes = [System.Convert]::ToBoolean($ChangesetCommentReleaseNotes)
-    if ($wiReleaseNotes -or $commentReleaseNotes) {
+    if ($WorkItemReleaseNotes -or $ChangesetCommentReleaseNotes) {
         $vssEndPoint = Get-VstsEndpoint -Name "SystemVssConnection"
-        $linkedReleaseNotes = Get-LinkedReleaseNotes $vssEndPoint $commentReleaseNotes $wiReleaseNotes
+        $linkedReleaseNotes = Get-LinkedReleaseNotes $vssEndPoint $ChangesetCommentReleaseNotes $WorkItemReleaseNotes
     }
     $releaseNotesParam = Create-ReleaseNotes $linkedReleaseNotes
 
     #deployment arguments
     if (-not [System.String]::IsNullOrWhiteSpace($DeployTo)) {
-        $deployToParams = "--deployTo=`"$DeployTo`""
+        $deployToParams = "--deployTo=`"$DeployTo`" --progress=$DeploymentProgress"
     }
 
     # Call Octo.exe
     $octoPath = Get-OctoExePath
-    Invoke-VstsTool -FileName $octoPath -Arguments "create-release --project=`"$ProjectName`" --server=$octopusUrl $credentialParams --enableServiceMessages $deployToParams $releaseNotesParam $AdditionalArguments"
+    Invoke-VstsTool -FileName $octoPath -Arguments "create-release --project=`"$ProjectName`" --releaseNumber=`"$ReleaseNumber`" --channel=`"$Channel`" --server=$octopusUrl $credentialParams --enableServiceMessages $deployToParams $releaseNotesParam $AdditionalArguments"
 
 } finally {
     Trace-VstsLeavingInvocation $MyInvocation
