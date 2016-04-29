@@ -19,7 +19,7 @@ try {
 
     # Call Octo.exe
     $octoPath = Get-OctoExePath
-    $Arguments = "deploy-release --project=`"$Project`" --releaseNumber=`"$ReleaseNumber`" --progress="$ShowProgress" --server=$octopusUrl $credentialArgs $AdditionalArguments"
+    $Arguments = "deploy-release --project=`"$Project`" --releaseNumber=`"$ReleaseNumber`" --progress=$ShowProgress --server=$octopusUrl $credentialArgs $AdditionalArguments"
     if ($Environments) {
         ForEach($Environment in $Environments.Split(',').Trim()) {
             $Arguments = $Arguments + " --deployto=`"$Environment`""
