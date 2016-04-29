@@ -6,6 +6,7 @@
     "helpMarkDown": "set-by-pack.ps1",
     "category": "Deploy",
     "visibility": [
+        "Build",
         "Release"
     ],
     "author": "Octopus Deploy",
