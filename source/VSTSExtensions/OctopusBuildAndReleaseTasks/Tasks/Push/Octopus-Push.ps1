@@ -18,7 +18,11 @@ try {
 
     # Call Octo.exe
     $octoPath = Get-OctoExePath
-    $Arguments = "push --package=`"$Package`" --server=$octopusUrl $credentialArgs --replace-existing=$Replace $AdditionalArguments"
+    $Arguments = "push --package=`"$Package`" --server=$octopusUrl $credentialArgs $AdditionalArguments"
+    if ($Replace) {
+        $Arguments = $Arguments + " --replace-existing"
+    }
+
     Invoke-VstsTool -FileName $octoPath -Arguments $Arguments -RequireExitCodeZero
 
 } finally {
