@@ -10,6 +10,7 @@ try {
     $ConnectedServiceName = Get-VstsInput -Name ConnectedServiceName -Require
     $Package = Get-VstsInput -Name Package -Require
     $AdditionalArguments = Get-VstsInput -Name AdditionalArguments
+    $Replace = Get-VstsInput -Name Replace -AsBool
 
     $connectedServiceDetails = Get-VstsEndpoint -Name "$ConnectedServiceName" -Require
     $credentialArgs = Get-OctoCredentialArgs($connectedServiceDetails)
