@@ -73,7 +73,7 @@
             "groupName": "advanced"
         }
     ],
-    "instanceNameFormat": "Push Packages to Octopus",
+    "instanceNameFormat": "Deploy Octopus Release: $(Project) to $(Environments)",
     "execution": {
         "PowerShell3": {
             "target": "Octopus-DeployRelease.ps1"
