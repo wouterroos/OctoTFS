@@ -26,7 +26,7 @@ try {
         }
     }
 
-    Invoke-VstsTool -FileName $octoPath -Arguments $Arguments
+    Invoke-VstsTool -FileName $octoPath -Arguments $Arguments -RequireExitCodeZero
 
 } finally {
     Trace-VstsLeavingInvocation $MyInvocation

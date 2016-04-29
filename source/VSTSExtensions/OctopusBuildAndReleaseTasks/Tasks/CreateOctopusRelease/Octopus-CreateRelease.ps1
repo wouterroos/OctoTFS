@@ -141,7 +141,7 @@ try {
 
     # Call Octo.exe
     $octoPath = Get-OctoExePath
-    Invoke-VstsTool -FileName $octoPath -Arguments "create-release --project=`"$ProjectName`" --releaseNumber=`"$ReleaseNumber`" --channel=`"$Channel`" --server=$octopusUrl $credentialParams --enableServiceMessages $deployToParams $releaseNotesParam $AdditionalArguments"
+    Invoke-VstsTool -FileName $octoPath -Arguments "create-release --project=`"$ProjectName`" --releaseNumber=`"$ReleaseNumber`" --channel=`"$Channel`" --server=$octopusUrl $credentialParams --enableServiceMessages $deployToParams $releaseNotesParam $AdditionalArguments" -RequireExitCodeZero
 
 } finally {
     Trace-VstsLeavingInvocation $MyInvocation
