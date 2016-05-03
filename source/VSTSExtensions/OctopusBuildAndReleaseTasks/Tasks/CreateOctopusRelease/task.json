@@ -108,7 +108,7 @@
             "label": "Show Deployment Progress",
             "defaultValue": "false",
             "required": false,
-            "helpMarkDown": "If checked, the build process will only succeed if the deployment is successful. Output from the deployment will appear in the build output.",
+            "helpMarkDown": "Output from the deployment will appear in the log. If checked, the task will only succeed if the deployment is successful.",
             "groupName": "deployment"
         },
         {
