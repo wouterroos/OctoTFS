@@ -4,7 +4,7 @@ Build and Release tasks to integrate with [Octopus Deploy](http://octopus.com).
 
 If you'd like to install from code, detailed installation instructions can be found at [http://docs.octopusdeploy.com/display/OD/Use+the+Team+Foundation+Build+Custom+Task](http://docs.octopusdeploy.com/display/OD/Use+the+Team+Foundation+Build+Custom+Task)
 
-### <a name="create-connected-service"></a>Create Connected Service
+### Create Connected Service
 Before starting, configure a "Generic" connected service in the administration section for your project.
 
 Use "octopus" for the User name and your Octopus API Key for the Password/Token Key setting.
@@ -17,11 +17,11 @@ Use "octopus" for the User name and your Octopus API Key for the Password/Token 
 This extension adds the following tasks:
 
 - [Package Application](#package-application)
-- [Push Package(s) to Octopus](#push-package)
+- [Push Packages to Octopus](#push-packages-to-octopus)
 - [Create Octopus Release](#create-octopus-release)
 - [Deploy Octopus Release](#deploy-octopus-release)
 
-### <a name="package-application"></a>Package Application
+### Package Application
 
 *Note: You can still use [OctoPack](http://docs.octopusdeploy.com/display/OD/Using+OctoPack) as part of your MSBuild task to package and push Nuget packages.*
 
@@ -34,7 +34,7 @@ This extension adds the following tasks:
  * **Output Path**: The directory into which the generated package will be written. Defaults to working directory.
  * **Additional Octo.exe Arguments**:  Any additional [Octo.exe arguments](http://docs.octopusdeploy.com/display/OD/Using+Octo.exe) to include
 
-### <a name="push-package"></a>Push Package(s) to Octopus
+### Push Packages to Octopus
 
  ![Configure Package Application Step](img/push-packages-options.png)
  Options include:
@@ -43,7 +43,7 @@ This extension adds the following tasks:
  * **Replace Existing**: If the package already exists in the repository, the default behavior is to reject the new package being pushed. Set this flag to 'True' to overwrite the existing package.
  * **Additional Octo.exe Arguments**:  Any additional [Octo.exe arguments](http://docs.octopusdeploy.com/display/OD/Pushing+packages) to include
 
-### <a name="create-octopus-release"></a>Create Octopus Release
+### Create Octopus Release
 
  ![Configure Create Release Step](img/create-release-options.png)
 
@@ -64,7 +64,7 @@ The *Release Notes* options, if selected, will result in nicely formatted releas
 
 ![Release Notes in Octopus Deploy Release](img/tfsbuild-releasenotes.png)
 
-### <a name="deploy-octopus-release"></a> Deploy Octopus Release
+###  Deploy Octopus Release
 
  ![Configure Deploy Release Step](img/deploy-release-options.png)
 
