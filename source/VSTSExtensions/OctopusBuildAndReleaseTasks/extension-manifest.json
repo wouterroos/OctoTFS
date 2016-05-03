@@ -25,12 +25,6 @@
     "screenshots": [
         {
             "path": "img/tfsbuild-addbuildstep.png"
-        },
-        {
-            "path": "img/tfsbuild-configurebuildstep.png"
-        },
-        {
-            "path": "img/tfsbuild-releasenotes.png"
         }
     ],
     "content": {
