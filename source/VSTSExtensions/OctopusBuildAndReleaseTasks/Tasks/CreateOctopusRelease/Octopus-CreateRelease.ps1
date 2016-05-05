@@ -6,7 +6,7 @@ function Get-LinkedReleaseNotes($vssEndpoint, $comments, $workItems) {
 
     Write-Host "Environment = $env:BUILD_REPOSITORY_PROVIDER"
 	Write-Host "Comments = $comments, WorkItems = $workItems"
-	$personalAccessToken = $vssEndpoint.Authorization.Parameters.AccessToken
+	$personalAccessToken = $vssEndpoint.Auth.Parameters.AccessToken
 	
 	$changesUri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$($env:SYSTEM_TEAMPROJECTID)/_apis/build/builds/$($env:BUILD_BUILDID)/changes"
 	$headers = @{Authorization = "Bearer $personalAccessToken"}
@@ -129,7 +129,7 @@ try {
     # Get release notes
     $linkedReleaseNotes = ""
     if ($WorkItemReleaseNotes -or $ChangesetCommentReleaseNotes) {
-        $vssEndPoint = Get-VstsEndpoint -Name "SystemVssConnection"
+        $vssEndPoint = Get-VstsEndpoint -Name "SystemVssConnection" -Require
         $linkedReleaseNotes = Get-LinkedReleaseNotes $vssEndPoint $ChangesetCommentReleaseNotes $WorkItemReleaseNotes
     }
     $releaseNotesParam = Create-ReleaseNotes $linkedReleaseNotes
