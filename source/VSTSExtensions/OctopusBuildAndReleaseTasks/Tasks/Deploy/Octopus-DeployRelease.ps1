@@ -12,6 +12,7 @@ try {
     $ReleaseNumber = Get-VstsInput -Name ReleaseNumber -Require
     $Environments = Get-VstsInput -Name Environments -Require
     $ShowProgress = Get-VstsInput -Name ShowProgress -AsBool
+    $AdditionalArguments = Get-VstsInput -Name AdditionalArguments
 
     $connectedServiceDetails = Get-VstsEndpoint -Name "$ConnectedServiceName" -Require
     $credentialArgs = Get-OctoCredentialArgs($connectedServiceDetails)
