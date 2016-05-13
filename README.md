@@ -27,7 +27,7 @@ PowerShell Scripts that can be used independently or with [Team Build vNext](htt
 ## Production Environment
 
 - [Octopus Extension in Marketplace](https://marketplace.visualstudio.com/items?itemName=octopusdeploy.octopus-deploy-build-release-tasks)
-- [Octopus VSTS Environment](https://octopus-deploy-test.visualstudio.com)
+- [Octopus VSTS Environment](https://octopus-deploy.visualstudio.com)
 - [Security Tokens](https://octopus-deploy.visualstudio.com/_details/security/tokens)
 
 ## Test Environment
