@@ -136,7 +136,10 @@ try {
 
     #deployment arguments
     if (-not [System.String]::IsNullOrWhiteSpace($DeployTo)) {
-        $deployToParams = "--deployTo=`"$DeployTo`" --progress=$DeploymentProgress"
+        $deployToParams = "--deployTo=`"$DeployTo`""
+        if ($DeploymentProgress) {
+            $deployToParams += " --progress"
+        }
     }
 
     # Call Octo.exe
