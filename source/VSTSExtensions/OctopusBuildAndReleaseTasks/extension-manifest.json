@@ -99,6 +99,16 @@
             "properties": {
                 "name": "Tasks/Push"
             }
+        },
+        {
+            "id": "octopus-promote",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "Tasks/Promote"
+            }
         }
     ]
 }
