@@ -4,7 +4,7 @@
     "friendlyName": "Promote Octopus Release",
     "description": "Promote an Octopus release from one environment to another",
     "helpMarkDown": "set-by-pack.ps1",
-    "category": "Package",
+    "category": "Deploy",
     "visibility": [
         "Build",
         "Release"
