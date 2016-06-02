@@ -20,7 +20,7 @@ try {
     $octoPath = Get-OctoExePath
     $Arguments = "push --server=$octopusUrl $credentialArgs $AdditionalArguments"
 
-    ForEach($Package in ($Packages.Split("`r`n|`r|`n").Trim()) {
+    ForEach($Package in ($Packages.Split("`r`n|`r|`n").Trim())) {
         if (-not [string]::IsNullOrEmpty($Package)) {
             $Arguments = $Arguments + " --package `"$Package`""
         }
