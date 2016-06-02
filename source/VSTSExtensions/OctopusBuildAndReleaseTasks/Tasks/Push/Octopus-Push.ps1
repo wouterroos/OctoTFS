@@ -8,7 +8,7 @@ try {
     . .\Octopus-VSTS.ps1
 
     $ConnectedServiceName = Get-VstsInput -Name ConnectedServiceName -Require
-    $Package = Get-VstsInput -Name Package -Require
+    $Packages = Get-VstsInput -Name Package -Require
     $AdditionalArguments = Get-VstsInput -Name AdditionalArguments
     $Replace = Get-VstsInput -Name Replace -AsBool
 
@@ -18,7 +18,14 @@ try {
 
     # Call Octo.exe
     $octoPath = Get-OctoExePath
-    $Arguments = "push --package=`"$Package`" --server=$octopusUrl $credentialArgs $AdditionalArguments"
+    $Arguments = "push --server=$octopusUrl $credentialArgs $AdditionalArguments"
+
+    ForEach($Package in ($Packages.Split("`r`n|`r|`n").Trim())) {
+        if (-not [string]::IsNullOrEmpty($Package)) {
+            $Arguments = $Arguments + " --package `"$Package`""
+        }
+    }
+
     if ($Replace) {
         $Arguments = $Arguments + " --replace-existing"
     }
