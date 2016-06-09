@@ -28,7 +28,7 @@ This extension adds the following tasks:
  ![Configure Package Application Step](img/create-package-options.png)
  Options include:
  * **Package ID**: The ID of the package. e.g. MyCompany.App
- * **Package ID**: NuPkg or Zip
+ * **Package Format**: NuPkg or Zip
  * **Package Version**: The version of the package; must be a valid [SemVer](http://semver.org/) version; defaults to a timestamp-based version.
  * **Source Path**: The folder containing the files and folders to package. Defaults to working directory.
  * **Output Path**: The directory into which the generated package will be written. Defaults to working directory.
