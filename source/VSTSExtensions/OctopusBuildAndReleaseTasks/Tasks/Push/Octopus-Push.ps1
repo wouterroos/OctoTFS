@@ -22,7 +22,7 @@ try {
 
     ForEach($Package in ($Packages.Split("`r`n|`r|`n").Trim())) {
         if (-not [string]::IsNullOrEmpty($Package)) {
-            $Arguments = $Arguments + " --package `"$Package`""
+            $Arguments = $Arguments + " --package=`"$Package`""
         }
     }
 
