@@ -22,7 +22,20 @@ try {
 
     ForEach($Package in ($Packages.Split("`r`n|`r|`n").Trim())) {
         if (-not [string]::IsNullOrEmpty($Package)) {
-            $Arguments = $Arguments + " --package=`"$Package`""
+            
+            # If path contains wildcard expect multiple files
+            if ($Package -like '*`**'){
+                
+                foreach ($file in (Get-Item -Path $Package)){
+                    $Arguments = $Arguments + " --package=`"$file`""
+                }
+            }
+            
+            # Otherwise add each line as a single file argument
+            else{
+                $Arguments = $Arguments + " --package=`"$Package`""
+            }
+            
         }
     }
 
