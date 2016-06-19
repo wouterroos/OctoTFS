@@ -22,7 +22,10 @@ try {
 
     ForEach($Package in ($Packages.Split("`r`n|`r|`n").Trim())) {
         if (-not [string]::IsNullOrEmpty($Package)) {
-            $Arguments = $Arguments + " --package=`"$Package`""
+
+            foreach ($file in (Get-Item -Path $Package)){
+                $Arguments = $Arguments + " --package=`"$file`""
+            }
         }
     }
 
