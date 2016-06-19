@@ -20,7 +20,12 @@ try {
 
     # Call Octo.exe
     $octoPath = Get-OctoExePath
-    $Arguments = "promote-release --project=`"$Project`" --from=`"$From`" --progress=$ShowProgress --server=$octopusUrl $credentialArgs $AdditionalArguments"
+    $Arguments = "promote-release --project=`"$Project`" --from=`"$From`" --server=$octopusUrl $credentialArgs $AdditionalArguments"
+    
+    if ($ShowProgress) {
+       $Arguments += " --progress"
+    }
+    
     if ($To) {
         ForEach($Environment in $To.Split(',').Trim()) {
             $Arguments = $Arguments + " --to=`"$Environment`""
