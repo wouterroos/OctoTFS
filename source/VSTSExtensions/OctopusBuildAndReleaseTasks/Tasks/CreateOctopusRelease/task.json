@@ -48,9 +48,6 @@
             "label": "Project Name",
             "defaultValue": "",
             "required": true,
-            "properties": {
-                "EditableOptions": "True"
-            },
             "helpMarkDown": "Octopus Deploy Project Name"
         },
         {
