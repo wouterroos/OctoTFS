@@ -154,7 +154,7 @@
                 ],
                 "authenticationSchemes": [
                     {
-                        "type": "endpoint-auth-scheme-octopusapi"
+                        "type": "ms.vss-endpoint.endpoint-auth-scheme-octopusapi"
                     }
                 ],
                 "helpMarkDown": "i18n:Octopus Deploy endpoint"
