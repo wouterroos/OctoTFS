@@ -145,10 +145,6 @@
             "properties": {
                 "name": "octopusendpoint",
                 "displayName": "Octopus Deploy",
-                "url": {
-                    "displayName": "i18n:Octopus Server Url",
-                    "helpText": ""
-                },
                 "dataSources": [
                     {
                         "name": "Projects",
