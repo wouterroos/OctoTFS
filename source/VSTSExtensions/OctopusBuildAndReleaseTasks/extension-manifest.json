@@ -109,6 +109,60 @@
             "properties": {
                 "name": "Tasks/Promote"
             }
+        },
+        {
+            "id": "endpoint-auth-scheme-octopusapi",
+            "description": "i18n:Octopus API key based endpoint authentication scheme",
+            "type": "ms.vss-endpoint.service-endpoint-auth-scheme",
+            "targets": [ "ms.vss-endpoint.endpoint-auth-schemes" ],
+            "properties": {
+                "name": "Octopus Deploy",
+                "displayName": "i18n:Octopus Deploy Authentication with an API Key",
+                "headers": [{"name": "X-Octopus-ApiKey", "value": "{{endpoint.apikey}}"}],
+                "inputDescriptors": [
+                    {
+                    "id": "apikey",
+                    "name": "i18n:Octopus API Key",
+                    "description": "i18n:API Key for connection to Octopus",
+                    "inputMode": "textbox",
+                    "isConfidential": true,
+                    "validation": {
+                        "isRequired": true,
+                        "dataType": "string",
+                        "maxLength": 35
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": "octopus-endpoint-type",
+            "description": "i18n:Octopus Deploy Endpoint type for Octopus Build tasks",
+            "type": "ms.vss-endpoint.service-endpoint-type",
+            "targets": [
+                "ms.vss-endpoint.endpoint-types"
+            ],
+            "properties": {
+                "name": "octopusendpoint",
+                "displayName": "Octopus Deploy",
+                "url": {
+                    "displayName": "i18n:Octopus Server Url",
+                    "helpText": ""
+                },
+                "dataSources": [
+                    {
+                        "name": "Projects",
+                        "endpointUrl": "$(endpoint.url)/api/projects/all",
+                        "resultSelector": "jsonpath:$.[*].Name"
+                    }
+                ],
+                "authenticationSchemes": [
+                    {
+                        "type": "endpoint-auth-scheme-octopusapi"
+                    }
+                ],
+                "helpMarkDown": "i18n:Octopus Deploy endpoint"
+            }
         }
     ]
 }
