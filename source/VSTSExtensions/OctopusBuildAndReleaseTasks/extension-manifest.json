@@ -147,7 +147,7 @@
                     "headers": [
                     {
                         "name": "X-Octopus-ApiKey",
-                        "value": "api_key {{endpoint.apitoken}}"
+                        "value": "{{endpoint.apitoken}}"
                     }
                     ]
                 }
