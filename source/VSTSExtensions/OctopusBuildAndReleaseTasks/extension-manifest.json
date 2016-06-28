@@ -111,31 +111,6 @@
             }
         },
         {
-            "id": "endpoint-auth-scheme-octopusapi",
-            "description": "Octopus API key based endpoint authentication scheme",
-            "type": "ms.vss-endpoint.service-endpoint-auth-scheme",
-            "targets": [ "ms.vss-endpoint.endpoint-auth-schemes" ],
-            "properties": {
-                "name": "Octopus Deploy",
-                "displayName": "Octopus Deploy Authentication with an API Key",
-                "headers": [{"name": "X-Octopus-ApiKey", "value": "{{endpoint.apikey}}"}],
-                "inputDescriptors": [
-                    {
-                    "id": "apikey",
-                    "name": "Octopus API Key",
-                    "description": "API Key for connection to Octopus",
-                    "inputMode": "textbox",
-                    "isConfidential": true,
-                    "validation": {
-                        "isRequired": true,
-                        "dataType": "string",
-                        "maxLength": 35
-                        }
-                    }
-                ]
-            }
-        },
-        {
             "id": "octopus-endpoint-type",
             "description": "Octopus Deploy Endpoint type for Octopus Build tasks",
             "type": "ms.vss-endpoint.service-endpoint-type",
@@ -153,11 +128,31 @@
                     }
                 ],
                 "authenticationSchemes": [
+                {
+                    "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
+                    "inputDescriptors": [
                     {
-                        "type": "ms.vss-endpoint.endpoint-auth-scheme-octopusapi"
+                        "id": "apikey",
+                        "name": "API Key",
+                        "description": "API key for connection to Octopus Deploy",
+                        "inputMode": "passwordBox",
+                        "isConfidential": true,
+                        "validation": {
+                        "isRequired": true,
+                        "dataType": "string",
+                        "maxLength": 32
+                        }
                     }
+                    ],
+                    "headers": [
+                    {
+                        "name": "X-Octopus-ApiKey",
+                        "value": "api_key {{endpoint.apikey}}"
+                    }
+                    ]
+                }
                 ],
-                "helpMarkDown": "Octopus Deploy endpoint"
+                "helpMarkDown": "The Octopus URL must be accessible from both VSTS and any agents that are running builds or releases. See [g.octopushq.com/ApiKey](http://g.octopushq.com/ApiKey) for details on how to generate an API key."
             }
         }
     ]
