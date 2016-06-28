@@ -132,7 +132,7 @@
                     "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
                     "inputDescriptors": [
                     {
-                        "id": "apikey",
+                        "id": "apitoken",
                         "name": "API Key",
                         "description": "API key for connection to Octopus Deploy",
                         "inputMode": "passwordBox",
@@ -147,7 +147,7 @@
                     "headers": [
                     {
                         "name": "X-Octopus-ApiKey",
-                        "value": "api_key {{endpoint.apikey}}"
+                        "value": "api_key {{endpoint.apitoken}}"
                     }
                     ]
                 }
