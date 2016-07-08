@@ -7,9 +7,9 @@ function Get-OctoExePath() {
 function Get-OctoCredentialArgs($serviceDetails) {
 	$pwd = $serviceDetails.Auth.Parameters.Password
 	if ($pwd.StartsWith("API-")) {
-        return "--apiKey=$pwd"
+        return "--apiKey=""$pwd"""
     } else {
         $un = $serviceDetails.Auth.Parameters.Username
-        return "--user=$un --pass=$pwd"
+        return "--user=""$un"" --pass=""$pwd"""
     }
 }
