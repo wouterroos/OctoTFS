@@ -36,7 +36,7 @@
     "inputs": [
         {
             "name": "ConnectedServiceName",
-            "type": "connectedService:octopusendpoint",
+            "type": "connectedService:Generic",
             "label": "Octopus Deploy Server",
             "defaultValue": "",
             "required": true,
@@ -44,7 +44,7 @@
         },
         {
             "name": "ProjectName",
-            "type": "pickList",
+            "type": "string",
             "label": "Project Name",
             "defaultValue": "",
             "required": true,
@@ -121,13 +121,6 @@
             "groupName": "additional"
         }
     ],
-  "dataSourceBindings": [
-    {
-      "target": "ProjectName",
-      "endpointId": "$(ConnectedServiceName)",
-      "dataSourceName": "Projects"
-  }
-  ],
     "instanceNameFormat": "Create Octopus Release: $(ProjectName)",
     "execution": {
         "PowerShell3": {
