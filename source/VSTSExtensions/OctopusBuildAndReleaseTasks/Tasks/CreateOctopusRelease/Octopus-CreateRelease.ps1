@@ -117,7 +117,7 @@ try {
     $ChangesetCommentReleaseNotes = Get-VstsInput -Name ChangesetCommentReleaseNotes -AsBool
     $WorkItemReleaseNotes = Get-VstsInput -Name WorkItemReleaseNotes -AsBool
     $CustomReleaseNotes = Get-VstsInput -Name CustomReleaseNotes
-    $DeployTo = Get-VstsInput -Name DeployTo
+    $DeployToEnvironment = Get-VstsInput -Name DeployToEnvironment
     $DeploymentProgress = Get-VstsInput -Name DeploymentProgress -AsBool
     $AdditionalArguments = Get-VstsInput -Name AdditionalArguments
 
@@ -135,8 +135,8 @@ try {
     $releaseNotesParam = Create-ReleaseNotes $linkedReleaseNotes
 
     #deployment arguments
-    if (-not [System.String]::IsNullOrWhiteSpace($DeployTo)) {
-        $deployToParams = "--deployTo=`"$DeployTo`""
+    if (-not [System.String]::IsNullOrWhiteSpace($DeployToEnvironment)) {
+        $deployToParams = "--deployTo=`"$DeployToEnvironment`""
         if ($DeploymentProgress) {
             $deployToParams += " --progress"
         }

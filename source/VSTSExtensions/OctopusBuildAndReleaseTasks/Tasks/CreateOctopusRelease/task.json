@@ -94,9 +94,9 @@
             "groupName": "releasenotes"
         },
         {
-            "name": "DeployTo",
+            "name": "DeployToEnvironment",
             "type": "string",
-            "label": "Deploy Release To",
+            "label": "Deploy Release To Environment",
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Deploy the release to this environment after creating it",
