@@ -144,7 +144,7 @@ try {
     }
 
 	# optional deployment tenants & tags
-	if ($DeployToTenants) {
+	if (-not [System.String]::IsNullOrWhiteSpace($DeployToTenants)) {
         ForEach($Tenant in $DeployToTenants.Split(',').Trim()) {
             $Arguments = $Arguments + " --tenant=`"$Tenant`""
         }
