@@ -112,6 +112,15 @@
             "groupName": "deployment"
         },
         {
+            "name": "DeployForTenants",
+            "type": "string",
+            "label": "Deploy Release For Tenants(s)",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Deploy the release for this tag delimited list of tenants after creating it",
+            "groupName": "deployment"
+        },
+        {
             "name": "AdditionalArguments",
             "type": "string",
             "label": "Additional Octo.exe Arguments ",
