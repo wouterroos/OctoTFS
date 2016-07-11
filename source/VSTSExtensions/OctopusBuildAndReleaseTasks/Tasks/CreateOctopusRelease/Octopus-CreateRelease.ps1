@@ -118,6 +118,7 @@ try {
     $WorkItemReleaseNotes = Get-VstsInput -Name WorkItemReleaseNotes -AsBool
     $CustomReleaseNotes = Get-VstsInput -Name CustomReleaseNotes
     $DeployToEnvironment = Get-VstsInput -Name DeployToEnvironment
+	$DeployToTenants = Get-VstsInput -Name DeployToTenants
     $DeploymentProgress = Get-VstsInput -Name DeploymentProgress -AsBool
     $AdditionalArguments = Get-VstsInput -Name AdditionalArguments
 
@@ -139,6 +140,13 @@ try {
         $deployToParams = "--deployTo=`"$DeployToEnvironment`""
         if ($DeploymentProgress) {
             $deployToParams += " --progress"
+        }
+    }
+
+	# optional deployment tenants & tags
+	if ($DeployToTenants) {
+        ForEach($Tenant in $DeployToTenants.Split(',').Trim()) {
+            $Arguments = $Arguments + " --tenant=`"$Tenant`""
         }
     }
 
