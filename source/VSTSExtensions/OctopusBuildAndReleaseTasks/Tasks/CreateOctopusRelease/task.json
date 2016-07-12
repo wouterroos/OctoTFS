@@ -108,7 +108,7 @@
             "label": "For Tenant",
             "defaultValue": "",
             "required": false,
-            "helpMarkDown": "Deploy the release for this tag delimited list of tenants after creating it",
+            "helpMarkDown": "Deploy the release for this comma delimited list of tenants after creating it",
             "groupName": "deployment"
         },
         {
