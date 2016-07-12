@@ -118,7 +118,8 @@ try {
     $WorkItemReleaseNotes = Get-VstsInput -Name WorkItemReleaseNotes -AsBool
     $CustomReleaseNotes = Get-VstsInput -Name CustomReleaseNotes
     $DeployToEnvironment = Get-VstsInput -Name DeployToEnvironment
-	$DeployToTenants = Get-VstsInput -Name DeployToTenants
+	$DeployForTenants = Get-VstsInput -Name DeployForTenants
+	$DeployForTenantTags = Get-VstsInput -Name DeployForTenantTags
     $DeploymentProgress = Get-VstsInput -Name DeploymentProgress -AsBool
     $AdditionalArguments = Get-VstsInput -Name AdditionalArguments
 
@@ -144,11 +145,17 @@ try {
     }
 
 	# optional deployment tenants & tags
-	if (-not [System.String]::IsNullOrWhiteSpace($DeployToTenants)) {
-        ForEach($Tenant in $DeployToTenants.Split(',').Trim()) {
+	if (-not [System.String]::IsNullOrWhiteSpace($DeployForTenants)) {
+        ForEach($Tenant in $DeployForTenants.Split(',').Trim()) {
             $Arguments = $Arguments + " --tenant=`"$Tenant`""
         }
-    }
+	}
+
+	if (-not [System.String]::IsNullOrWhiteSpace($DeployForTenantTags)) {
+        ForEach($Tenant in $DeployForTenantTags.Split(',').Trim()) {
+            $Arguments = $Arguments + " --tenant=`"$Tenant`""
+		}
+	}
 
     # Call Octo.exe
     $octoPath = Get-OctoExePath

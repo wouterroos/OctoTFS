@@ -105,10 +105,19 @@
         {
             "name": "DeployForTenants",
             "type": "string",
-            "label": "For Tenants(s)",
+            "label": "For Tenant",
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Deploy the release for this tag delimited list of tenants after creating it",
+            "groupName": "deployment"
+        },
+        {
+            "name": "DeployForTenantTags",
+            "type": "string",
+            "label": "For Tenant Tags",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Deploy the release for tenants who match these tags and are ready to deploy to the provided environment.",
             "groupName": "deployment"
         },
         {
