@@ -43,7 +43,7 @@ try {
 
 	if (-not [System.String]::IsNullOrWhiteSpace($DeployForTenantTags)) {
         ForEach($Tenant in $DeployForTenantTags.Split(',').Trim()) {
-            $Arguments = $Arguments + " --tenant=`"$Tenant`""
+            $Arguments = $Arguments + " --tenanttag=`"$Tenant`""
 		}
 	}
     

@@ -144,7 +144,9 @@ try {
         }
     }
 
-	# optional deployment tenants & tags
+Write-Host "Tenants: "
+Write-Host $DeployForTenants
+  # optional deployment tenants & tags
 	if (-not [System.String]::IsNullOrWhiteSpace($DeployForTenants)) {
         ForEach($Tenant in $DeployForTenants.Split(',').Trim()) {
             $Arguments = $Arguments + " --tenant=`"$Tenant`""
@@ -153,7 +155,7 @@ try {
 
 	if (-not [System.String]::IsNullOrWhiteSpace($DeployForTenantTags)) {
         ForEach($Tenant in $DeployForTenantTags.Split(',').Trim()) {
-            $Arguments = $Arguments + " --tenant=`"$Tenant`""
+            $Arguments = $Arguments + " --tenanttag=`"$Tenant`""
 		}
 	}
 
