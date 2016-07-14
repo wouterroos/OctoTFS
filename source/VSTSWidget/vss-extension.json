@@ -1,7 +1,7 @@
 ﻿{
   "manifestVersion": 1,
   "id": "vsts-extensions-Octopus",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "name": "Octopus Widgets",
   "description": "Octopus VSTS Widgets",
   "icons": {
@@ -18,7 +18,8 @@
       "id": "OctopusWidget",
       "type": "ms.vss-dashboards-web.widget",
       "targets": [
-        "ms.vss-dashboards-web.widget-catalog"
+        "ms.vss-dashboards-web.widget-catalog",
+        ".OctopusWidget.Configuration"
       ],
       "properties": {
         "name": "Octopus Status Widget",
@@ -34,6 +35,16 @@
         ],
         "supportedScopes": [ "project_team" ]
       }
+    },
+    {
+      "id": "OctopusWidget.Configuration",
+      "type": "ms.vss-dashboards-web.widget-configuration",
+      "targets": [ "ms.vss-dashboards-web.widget-configuration" ],
+      "properties": {
+        "name": "OctopusWidget Configuration",
+        "description": "Configures OctopusWidget",
+        "uri": "configuration.html"
+      }
     }
   ],
   "files": [
@@ -42,7 +53,16 @@
       "addressable": true
     },
     {
+      "path": "configuration.html",
+      "addressable": true
+    },
+
+    {
       "path": "scripts",
+      "addressable": true
+    },
+    {
+      "path": "content",
       "addressable": true
     },
     {
