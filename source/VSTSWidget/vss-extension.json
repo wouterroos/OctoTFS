@@ -1,0 +1,53 @@
+﻿{
+  "manifestVersion": 1,
+  "id": "vsts-extensions-Octopus",
+  "version": "1.0.1",
+  "name": "Octopus Widgets",
+  "description": "Octopus VSTS Widgets",
+  "icons": {
+    "default": "img/logo.png"
+  },
+  "publisher": "wouterroos",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "OctopusWidget",
+      "type": "ms.vss-dashboards-web.widget",
+      "targets": [
+        "ms.vss-dashboards-web.widget-catalog"
+      ],
+      "properties": {
+        "name": "Octopus Status Widget",
+        "description": "My first widget",
+        "catalogIconUrl:": "img/logo.png",
+        "previewImageUrl": "img/logo.png",
+        "uri": "octopus.html",
+        "supportedSizes": [
+          {
+            "rowSpan": 1,
+            "columnSpan": 1
+          }
+        ],
+        "supportedScopes": [ "project_team" ]
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "octopus.html",
+      "addressable": true
+    },
+    {
+      "path": "scripts",
+      "addressable": true
+    },
+    {
+      "path": "sdk/scripts",
+      "addressable": true
+    }
+  ]
+}
