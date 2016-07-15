@@ -31,7 +31,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                         octopusApiKeyInput.val(settings.octopusApiKey)
                     }
                     if (settings.octopusUrl) {
-                        octopusApiKeyInput.val(settings.octopusUrl)
+                        octopusUrlInput.val(settings.octopusUrl)
                     }
                 }
 
@@ -49,6 +49,18 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                 }
 
                 var getProjects = function () {
+                    doRequest("/api/projects", function (getProjectsResult) {
+                        if (getProjectsResult && getProjectsResult.Items) {
+
+                            for (var i = 0; i < getProjectsResult.Items.length; i++) {
+                                var project = getProjectsResult.Items[i];
+                                projectsDropdown.append($("<option></option>").attr("value", project.Id).text(project.Name))
+                            }
+                        }
+                    });
+                }
+
+                var getEnvironments = function () {
                     doRequest("/api/projects", function (getProjectsResult) {
                         if (getProjectsResult && getProjectsResult.Items) {
 
