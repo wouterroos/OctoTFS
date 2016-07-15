@@ -1,17 +1,4 @@
-﻿var baseUrl = "https://octopus.bdo.global";
-
-
-function DoRequest(requestUrl) {
-    return $.ajax({
-        type: "GET",
-        url: baseUrl + requestUrl,
-        beforeSend: function (request) {
-            request.setRequestHeader("X-Octopus-ApiKey", "API-ZK8Q0TCGQLSCOZZN1DJHGPLHPFI")
-        }
-    });
-}
-
-
+﻿
 VSS.init({
     explicitNotifyLoaded: true,
     usePlatformStyles: true
@@ -21,15 +8,21 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
     WidgetHelpers.IncludeWidgetStyles();
     VSS.register("OctopusWidget", function () {
 
-        var getCurrentDeploymentStatus = function GetCurrentDeploymentStatus(widgetSettings) {
+        var getCurrentDeploymentStatus = function (widgetSettings) {
             var settings = JSON.parse(widgetSettings.customSettings.data);
-            var project = null;
-            var environment = null;
-            var lastDeployment = null;
-            var release = null;
-            var task = null;
 
-            if (settings && settings.projectId) {
+            if (settings && settings.octopusUrl && settings.octopusApiKey && settings.projectId) {
+
+                var doRequest = function (requestUrl) {
+                    return $.ajax({
+                        type: "GET",
+                        url: settings.octopusUrl + requestUrl,
+                        beforeSend: function (request) {
+                            request.setRequestHeader("X-Octopus-ApiKey", settings.octopusApiKey)
+                        }
+                    });
+                }
+
                 var projectId = settings.projectId;
                 var environmentName = "Development";
 
@@ -37,8 +30,8 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
 
                 $.when
                 (
-                    DoRequest("/api/projects/" + projectId),
-                    DoRequest("/api/environments")
+                    doRequest("/api/projects/" + projectId),
+                    doRequest("/api/environments")
                 )
                 .done(function (getProjectResult, getEnvironmentsResult) {
 
@@ -61,7 +54,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
 
                     $.when
                     (
-                        DoRequest("/api/deployments?projects=" + project.Id + "&environments=" + environment.Id)
+                        doRequest("/api/deployments?projects=" + project.Id + "&environments=" + environment.Id)
                     )
                     .done(function (getDeploymentsResult) {
 
@@ -70,8 +63,8 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
 
                             $.when
                             (
-                                DoRequest(lastDeployment.Links.Release),
-                                DoRequest(lastDeployment.Links.Task
+                                doRequest(lastDeployment.Links.Release),
+                                doRequest(lastDeployment.Links.Task
                                 )
                             )
                             .done(function (getReleaseResult, getTaskResult) {
