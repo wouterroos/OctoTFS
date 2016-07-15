@@ -17,36 +17,28 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                     return $.ajax({
                         type: "GET",
                         url: settings.octopusUrl + requestUrl,
-                        beforeSend: function (request) {
-                            request.setRequestHeader("X-Octopus-ApiKey", settings.octopusApiKey)
-                        }
+                        crossDomain: true,
+                        headers: {
+                            "X-Octopus-ApiKey": settings.octopusApiKey
+                        },
                     });
                 }
 
                 var projectId = settings.projectId;
-                var environmentName = "Development";
-
-                $("#environmentName").text(environmentName);
+                var environmentId = settings.environmentId;
 
                 $.when
                 (
                     doRequest("/api/projects/" + projectId),
-                    doRequest("/api/environments")
+                    doRequest("/api/environments/" + environmentId)
                 )
                 .done(function (getProjectResult, getEnvironmentsResult) {
 
                     var project = getProjectResult[0];
-                    var environment = null;
+                    var environment = getEnvironmentsResult[0];
 
-                    if (getEnvironmentsResult && getEnvironmentsResult[0] && getEnvironmentsResult[0].Items) {
-                        var environments = getEnvironmentsResult[0].Items
-                        for (var j = 0; j < environments.length; j++) {
-                            if (environments[j].Name.toLowerCase() === environmentName.toLowerCase()) {
-                                environment = environments[j];
-                                break;
-                            }
-                        }
-                    }
+                    $("#projectName").text(project.Name);
+                    $("#environmentName").text(environment.Name);
 
                     var lastDeployment = null;
                     var release = null;

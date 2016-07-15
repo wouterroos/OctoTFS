@@ -7,7 +7,8 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
     WidgetHelpers.IncludeWidgetConfigurationStyles();
     VSS.register("OctopusWidget.Configuration", function () {
 
-        var projectsDropdown = $("#project-dropdown");
+        var projectsDropdown = $("#projects-dropdown");
+        var environmentsDropdown = $("#environments-dropdown");
         var octopusUrlInput = $("#octopusUrl");
         var octopusApiKeyInput = $("#octopusApiKey");
 
@@ -15,7 +16,8 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
             return {
                 octopusUrl: octopusUrlInput.val(),
                 octopusApiKey: octopusApiKeyInput.val(),
-                projectId: projectsDropdown.val()
+                projectId: projectsDropdown.val(),
+                environmentId: environmentsDropdown.val()
             }
         };
 
@@ -24,9 +26,6 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                 var settings = JSON.parse(widgetSettings.customSettings.data);
 
                 if (settings) {
-                    if (settings.projectId) {
-                        projectsDropdown.val(settings.projectId);
-                    }
                     if (settings.octopusApiKey) {
                         octopusApiKeyInput.val(settings.octopusApiKey)
                     }
@@ -35,44 +34,53 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                     }
                 }
 
-                var doRequest = function (requestUrl, successCallback) {
+                var doRequest = function (requestUrl) {
                     if (settings && settings.octopusUrl && settings.octopusApiKey) {
-                        $.ajax({
+                        return $.ajax({
                             type: "GET",
                             url: settings.octopusUrl + requestUrl,
-                            beforeSend: function (request) {
-                                request.setRequestHeader("X-Octopus-ApiKey", settings.octopusApiKey)
-                            },
-                            success: successCallback
+                            crossDomain: true,
+                            headers: {
+                                "X-Octopus-ApiKey": settings.octopusApiKey
+                            }
                         });
                     }
+                    return null;
                 }
 
-                var getProjects = function () {
-                    doRequest("/api/projects", function (getProjectsResult) {
-                        if (getProjectsResult && getProjectsResult.Items) {
-
-                            for (var i = 0; i < getProjectsResult.Items.length; i++) {
-                                var project = getProjectsResult.Items[i];
+                var getProjectsAndEnvironments = function () {
+                    $.when
+                    (
+                        doRequest("/api/projects"),
+                        doRequest("/api/environments")
+                    )
+                    .done(function (getProjectsResult, getEnvironmentsResult) {
+                        if (getProjectsResult && getProjectsResult[0] && getProjectsResult[0].Items) {
+                            var projects = getProjectsResult[0].Items;
+                            for (var i = 0; i < projects.length; i++) {
+                                var project = projects[i];
                                 projectsDropdown.append($("<option></option>").attr("value", project.Id).text(project.Name))
+                            }
+
+                            if (settings.projectId) {
+                                projectsDropdown.val(settings.projectId);
+                            }
+                        }
+                        if (getEnvironmentsResult && getEnvironmentsResult[0] && getEnvironmentsResult[0].Items) {
+                            var environments = getEnvironmentsResult[0].Items;
+                            for (var i = 0; i < environments.length; i++) {
+                                var environment = environments[i];
+                                environmentsDropdown.append($("<option></option>").attr("value", environment.Id).text(environment.Name))
+                            }
+
+                            if (settings.environmentId) {
+                                environmentsDropdown.val(settings.environmentId);
                             }
                         }
                     });
                 }
 
-                var getEnvironments = function () {
-                    doRequest("/api/projects", function (getProjectsResult) {
-                        if (getProjectsResult && getProjectsResult.Items) {
-
-                            for (var i = 0; i < getProjectsResult.Items.length; i++) {
-                                var project = getProjectsResult.Items[i];
-                                projectsDropdown.append($("<option></option>").attr("value", project.Id).text(project.Name))
-                            }
-                        }
-                    });
-                }
-
-                var updateSettings = function() {
+                var updateSettings = function () {
                     settings = getSettings();
                     var eventName = WidgetHelpers.WidgetEvent.ConfigurationChange;
                     var eventArgs = WidgetHelpers.WidgetEvent.Args({ data: JSON.stringify(settings) });
@@ -81,17 +89,23 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
 
                 octopusUrlInput.on("change", function () {
                     updateSettings();
-                    getProjects();
+                    getProjectsAndEnvironments();
                 });
 
                 octopusApiKeyInput.on("change", function () {
                     updateSettings();
-                    getProjects();
+                    getProjectsAndEnvironments();
                 });
 
                 projectsDropdown.on("change", function () {
                     updateSettings();
                 });
+
+                environmentsDropdown.on("change", function () {
+                    updateSettings();
+                });
+
+                getProjectsAndEnvironments();
 
                 return WidgetHelpers.WidgetStatusHelper.Success();
             },
