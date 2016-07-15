@@ -42,7 +42,6 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                             url: settings.octopusUrl + requestUrl,
                             beforeSend: function (request) {
                                 request.setRequestHeader("X-Octopus-ApiKey", settings.octopusApiKey)
-                                request.setRequestHeader("Access-Control-Allow-Origin", "*")
                             },
                             success: successCallback
                         });
