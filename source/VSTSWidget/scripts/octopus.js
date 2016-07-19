@@ -75,9 +75,13 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                                     $(".widget").css("background-color", "#009ccc");
                                     $("#statusIcon").addClass("fa-spinner fa-spin");
                                 }
-                                if (task.State === "Canceled") {
+                                if (task.State === "Canceled" || task.State === "Canceling") {
                                     $(".widget").css("background-color", "#000000");
                                     $("#statusIcon").addClass("fa-user-times");
+                                }
+                                if (task.State === "TimedOut") {
+                                    $(".widget").css("background-color", "#f7a24b");
+                                    $("#statusIcon").addClass("fa-clock-o");
                                 }
 
                                 $("#deploymentUrl").prop("href", settings.octopusUrl + "/app?#/projects/" + project.Name + "/releases/" + release.Version + "/deployments/" + lastDeployment.Id)
