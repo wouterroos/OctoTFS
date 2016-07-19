@@ -75,6 +75,10 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                                     $(".widget").css("background-color", "#009ccc");
                                     $("#statusIcon").addClass("fa-spinner fa-spin");
                                 }
+                                if (task.State === "Canceled") {
+                                    $(".widget").css("background-color", "#000000");
+                                    $("#statusIcon").addClass("fa-user-times");
+                                }
 
                                 $("#deploymentUrl").prop("href", settings.octopusUrl + "/app?#/projects/" + project.Name + "/releases/" + release.Version + "/deployments/" + lastDeployment.Id)
                                 $("#version").text(release.Version)
