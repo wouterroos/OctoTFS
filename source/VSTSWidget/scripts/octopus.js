@@ -76,6 +76,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                                     $("#statusIcon").addClass("fa-spinner fa-spin");
                                 }
 
+                                $("#deploymentUrl").prop("href", settings.octopusUrl + "/app?#/projects/" + project.Name + "/releases/" + release.Version + "/deployments/" + lastDeployment.Id)
                                 $("#version").text(release.Version)
                                 return WidgetHelpers.WidgetStatusHelper.Success();
                             });

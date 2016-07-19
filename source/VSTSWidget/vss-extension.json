@@ -1,7 +1,7 @@
 ﻿{
   "manifestVersion": 1,
   "id": "vsts-extensions-Octopus",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "name": "Octopus Widgets",
   "description": "Octopus VSTS Widgets",
   "icons": {
