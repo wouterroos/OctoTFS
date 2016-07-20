@@ -63,25 +63,29 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                                 release = getReleaseResult[0];
                                 task = getTaskResult[0];
 
-                                if (task.State === "Success") {
-                                    $(".widget").css("background-color", "#339933");
-                                    $("#statusIcon").addClass("fa-check");
-                                }
-                                if (task.State === "Failed") {
-                                    $(".widget").css("background-color", "#e60017");
-                                    $("#statusIcon").addClass("fa-exclamation-triangle");
-                                }
-                                if (task.State === "Executing") {
-                                    $(".widget").css("background-color", "#009ccc");
-                                    $("#statusIcon").addClass("fa-spinner fa-spin");
-                                }
-                                if (task.State === "Canceled" || task.State === "Canceling") {
-                                    $(".widget").css("background-color", "#000000");
-                                    $("#statusIcon").addClass("fa-user-times");
-                                }
-                                if (task.State === "TimedOut") {
-                                    $(".widget").css("background-color", "#f7a24b");
-                                    $("#statusIcon").addClass("fa-clock-o");
+                                if (task) {
+                                    $(".widget").addClass("dark-widget");
+
+                                    if (task.State === "Success") {
+                                        $(".widget").css("background-color", "#339933");
+                                        $("#statusIcon").addClass("fa-check");
+                                    }
+                                    if (task.State === "Failed") {
+                                        $(".widget").css("background-color", "#e60017");
+                                        $("#statusIcon").addClass("fa-exclamation-triangle");
+                                    }
+                                    if (task.State === "Executing") {
+                                        $(".widget").css("background-color", "#009ccc");
+                                        $("#statusIcon").addClass("fa-spinner fa-spin");
+                                    }
+                                    if (task.State === "Canceled" || task.State === "Canceling") {
+                                        $(".widget").css("background-color", "#000000");
+                                        $("#statusIcon").addClass("fa-user-times");
+                                    }
+                                    if (task.State === "TimedOut") {
+                                        $(".widget").css("background-color", "#f7a24b");
+                                        $("#statusIcon").addClass("fa-clock-o");
+                                    }
                                 }
 
                                 $("#deploymentUrl").prop("href", settings.octopusUrl + "/app?#/projects/" + project.Name + "/releases/" + release.Version + "/deployments/" + lastDeployment.Id)
