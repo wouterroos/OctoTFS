@@ -1,7 +1,7 @@
 ﻿{
   "manifestVersion": 1,
   "id": "vsts-extensions-Octopus",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "name": "Octopus Widgets",
   "description": "Octopus VSTS Widgets",
   "icons": {
@@ -23,7 +23,7 @@
       ],
       "properties": {
         "name": "Octopus Status Widget",
-        "description": "My first widget",
+        "description": "Widget that displays the current status of an Octopus deployment.",
         "catalogIconUrl:": "img/logo.png",
         "previewImageUrl": "img/logo.png",
         "uri": "octopus.html",
