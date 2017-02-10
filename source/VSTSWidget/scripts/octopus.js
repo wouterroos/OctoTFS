@@ -90,6 +90,10 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
                                         $(".widget").css("background-color", "#4ebbdb");
                                         $("#statusIcon").addClass("fa-clock-o");
                                     }
+                                    if (task.State === "Waiting") {
+                                        $(".widget").css("background-color", "#f3aa41");
+                                        $("#statusIcon").addClass("fa-eye");
+                                    }
                                 }
 
                                 $("#deploymentUrl").prop("href", settings.octopusUrl + "/app?#/projects/" + project.Name + "/releases/" + release.Version + "/deployments/" + lastDeployment.Id)
